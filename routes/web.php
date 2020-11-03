@@ -20,4 +20,5 @@ Route::get('/', function () {
 })->name('home.index');
 Route::post('/confirmDownload',[OnlineHandShakeController::class, 'confirmDownload'])->name('confirmDownload');
 Route::get('/{status}/{keyword}/{amount}/{orderby}/{order}',[HomeController::class, 'index'])->name('data');
+Route::get('/{status}/{keyword}/{amount}/{orderby}/{order}/export',[HomeController::class, 'export'])->name('data.export');
 Route::get('/sync',[SyncController::class, 'sync'])->name('sync');
