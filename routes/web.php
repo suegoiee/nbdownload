@@ -21,3 +21,7 @@ Route::get('/', function () {
 Route::post('/confirmDownload',[OnlineHandShakeController::class, 'confirmDownload'])->name('confirmDownload');
 Route::get('/{status}/{keyword}/{amount}/{orderby}/{order}',[HomeController::class, 'index'])->name('data');
 Route::get('/sync',[SyncController::class, 'sync'])->name('sync');
+
+Route::middleware(['auth:sanctum', 'verified'])->get('/dashboard', function () {
+    return view('dashboard');
+})->name('dashboard');
