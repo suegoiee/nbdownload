@@ -89,7 +89,7 @@
                               <td><button type="button" class="btn btn-primary" data-toggle="modal" data-target="#modal-{{$list->download_id}}">Edit</button></td>
                           </tr>
                           <div class="modal fade" id="modal-{{$list->download_id}}">
-                              <div class="modal-dialog">
+                              <div class="modal-dialog modal-lg">
                                   <div class="modal-content">
                                       <form style="display:none" action="/confirmDownload" method="POST" id="confirmDownload-{{$list->download_id}}">
                                           @csrf
@@ -102,6 +102,38 @@
                                           <div class="modal-body">
                                               <p>File Path : </p>
                                               <p>You are about to approve <b>{{$list->download_title}}</b> to online system.</p><p> Please make sure the data is correct before confirming.</p>
+        <div class="card card-default">
+          <div class="card-header">
+            <h3 class="card-title">Files - Products relation</h3>
+          </div>
+          <!-- /.card-header -->
+          <div class="card-body">
+            <div class="row">
+              <div class="col-12">
+                <div class="form-group">
+                  <label>Multiple</label>
+                  <select class="duallistbox" multiple="multiple">
+                    <option selected>Alabama</option>
+                    <option>Alaska</option>
+                    <option>California</option>
+                    <option>Delaware</option>
+                    <option>Tennessee</option>
+                    <option>Texas</option>
+                    <option>Washington</option>
+                  </select>
+                </div>
+                <!-- /.form-group -->
+              </div>
+              <!-- /.col -->
+            </div>
+            <!-- /.row -->
+          </div>
+          <!-- /.card-body -->
+          <div class="card-footer">
+            Visit <a href="https://github.com/istvan-ujjmeszaros/bootstrap-duallistbox#readme">Bootstrap Duallistbox</a> for more examples and information about
+            the plugin.
+          </div>
+        </div>
                                           </div>
                                           <div class="modal-footer justify-content-between">
                                               <a href="denyDownload/{{$list->download_id}}"><button type="button" class="btn btn-danger" data-dismiss="modal">Deny</button></a>
@@ -182,5 +214,9 @@
           </div>
         </div>
       </div>
+      <script>
+        //Bootstrap Duallistbox
+        $('.duallistbox').bootstrapDualListbox();
+      </script>
     </section>
 @endsection

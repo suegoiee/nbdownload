@@ -25,7 +25,7 @@ class ProductListController extends Controller
         );
 
         $result = retrieve_data($list, 'POST', 'https://mtc.msi.com/api/v1/nb/get_productlist');
-        dd($result);
+        // dd($result);
         $tmp = (object) $result['data'];
         $data= new \stdClass();
         foreach ($tmp as $key => $value)

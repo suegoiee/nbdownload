@@ -20,6 +20,8 @@
   <link href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700" rel="stylesheet">
   <!-- jQuery -->
   <script src="{{asset('storage/third-party/jquery/jquery.min.js')}}"></script>
+  <!-- Bootstrap4 Duallistbox -->
+  <script src="{{asset('storage/third-party/bootstrap4-duallistbox/jquery.bootstrap-duallistbox.min.js')}}"></script>
 </head>
 <body class="hold-transition sidebar-mini">
 <div class="wrapper">
