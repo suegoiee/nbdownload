@@ -12,6 +12,7 @@ class OnlineHandShakeController extends Controller
 {    
     public function confirmDownload(Request $request)
     {
+        dd($request->all());
         $postdata = http_build_query(
             array(
                 'API_KEY' => env('API_KEY'),
