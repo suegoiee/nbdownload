@@ -23,6 +23,7 @@ class SyncController extends Controller
         curl_close( $ch );
 
         $response = json_decode($response);
+        dd($response);
         $model_marketing_recoeds = $response->ModelMarketingRecord;
         $time_start = time();
         for ( $i = 0; $i < count($model_marketing_recoeds); $i++ )

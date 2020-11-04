@@ -20,15 +20,30 @@ class CreateNewUser implements CreatesNewUsers
     public function create(array $input)
     {
         Validator::make($input, [
-            'name' => ['required', 'string', 'max:255'],
-            'email' => ['required', 'string', 'email', 'max:255', 'unique:users'],
-            'password' => $this->passwordRules(),
+            'user_name' => ['required', 'string', 'max:255'],
+            'user_email' => ['required', 'string', 'email', 'max:255', 'unique:cms_user'],
+            'user_password' => $this->passwordRules(),
         ])->validate();
 
         return User::create([
-            'name' => $input['name'],
-            'email' => $input['email'],
-            'password' => Hash::make($input['password']),
+            'user_name' => $input['user_name'],
+            'user_email' => $input['user_email'],
+            'user_password' => Hash::make($input['user_password']),
+            'category_id' => 0,
+            'user_country' => 'default',
+            'user_account' => $input['user_name'],
+            'user_fullname' => $input['user_name'],
+            'user_image' => '',
+            'user_admin' => 1,
+            'user_actived' => 1,
+            'user_author' => 1,
+            'user_is_pm' => 1,
+            'user_department' => '預設',
+            'user_last_login' => date('Y-m-d H:i:s'),
+            'user_create' => date('Y-m-d H:i:s'),
+            'user_modify' => date('Y-m-d H:i:s'),
+            'user_update' => date('Y-m-d H:i:s'),
+            'draft' => 0
         ]);
     }
 }

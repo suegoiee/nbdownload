@@ -39,8 +39,8 @@ class HomeController extends Controller
                         ->orWhere('tmp_osImage', 'LIKE', "%$keyword%");
                     });
         }
+        // dd($data = $data->orderby($orderby, $order)->first());
         $data = $data->orderby($orderby, $order)->paginate($amount);
-
         return view('download_list', compact('data', 'status', 'keyword', 'amount', 'orderby', 'order'));
     }
 }

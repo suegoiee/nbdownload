@@ -18,6 +18,8 @@
   <link rel="stylesheet" href="{{asset('storage/css/adminLTE3.0.5/adminlte.min.css')}}">
   <!-- Google Font: Source Sans Pro -->
   <link href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700" rel="stylesheet">
+  <!-- jQuery -->
+  <script src="{{asset('storage/third-party/jquery/jquery.min.js')}}"></script>
 </head>
 <body class="hold-transition sidebar-mini">
 <div class="wrapper">
@@ -41,8 +43,6 @@
 </div>
 <!-- ./wrapper -->
 
-<!-- jQuery -->
-<script src="{{asset('storage/third-party/jquery/jquery.min.js')}}"></script>
 <!-- Bootstrap 4 -->
 <script src="{{asset('storage/third-party/bootstrap/js/bootstrap.bundle.min.js')}}"></script>
 <!-- DataTables -->
