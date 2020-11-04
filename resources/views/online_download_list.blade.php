@@ -81,6 +81,7 @@
                   </tr>
                   </thead>
                   <tbody>
+                    <input type="hidden" id="csrf" value="{{csrf_token()}}">
                       @foreach($data as $list)
                           <tr>
                               <td>{{$list->download_title}}</td>
@@ -91,8 +92,6 @@
                           <div class="modal fade" id="modal-{{$list->download_id}}">
                               <div class="modal-dialog modal-lg">
                                   <div class="modal-content">
-                                      <form style="display:none" action="/confirmDownload" method="POST" id="confirmDownload-{{$list->download_id}}">
-                                          @csrf
                                           <div class="modal-header">
                                               <h4 class="modal-title">Warning</h4>
                                               <button type="button" class="close" data-dismiss="modal" aria-label="Close">
@@ -102,44 +101,43 @@
                                           <div class="modal-body">
                                               <p>File Path : </p>
                                               <p>You are about to approve <b>{{$list->download_title}}</b> to online system.</p><p> Please make sure the data is correct before confirming.</p>
-        <div class="card card-default">
-          <div class="card-header">
-            <h3 class="card-title">Files - Products relation</h3>
-          </div>
-          <!-- /.card-header -->
-          <div class="card-body">
-            <div class="row">
-              <div class="col-12">
-                <div class="form-group">
-                  <label>Multiple</label>
-                  <select class="duallistbox" multiple="multiple">
-                    <option selected>Alabama</option>
-                    <option>Alaska</option>
-                    <option>California</option>
-                    <option>Delaware</option>
-                    <option>Tennessee</option>
-                    <option>Texas</option>
-                    <option>Washington</option>
-                  </select>
-                </div>
-                <!-- /.form-group -->
-              </div>
-              <!-- /.col -->
-            </div>
-            <!-- /.row -->
-          </div>
-          <!-- /.card-body -->
-          <div class="card-footer">
-            Visit <a href="https://github.com/istvan-ujjmeszaros/bootstrap-duallistbox#readme">Bootstrap Duallistbox</a> for more examples and information about
-            the plugin.
-          </div>
-        </div>
+
+                                              <div class="row">
+                                                <input class="form-control search-product" type="text">
+                                                <div class="col-sm-5">
+                                                  <!-- Select multiple-->
+                                                  <div class="form-group">
+                                                    <label>Select Multiple</label>
+                                                    <select multiple class="form-control" id="product_pool">
+                                                    </select>
+                                                  </div>
+                                                </div>
+                                                <div class="col-sm-2">
+                                                  <div class="form-group">
+                                                    <label>action</label>
+                                                    <div class="form-control">
+                                                      <button type="button" class="btn btn-default" id="btn-add-selected">></button>
+                                                      <br>
+                                                      <button type="button" class="btn btn-default" id="btn-add-all">>></button>
+                                                    </div>
+                                                  </div>
+                                                </div>
+                                                <div class="col-sm-5">
+                                                  <div class="form-group">
+                                                    <label>Select Multiple</label>
+                                                    <select multiple class="form-control" id="seleted_relation">
+                                                      @foreach($list->has_many_product as $relation)
+                                                        <option value="{{$relation['product_id']}}">{{$relation['product_title']}}</option>
+                                                      @endforeach
+                                                    </select>
+                                                  </div>
+                                                </div>
+                                              </div>
                                           </div>
                                           <div class="modal-footer justify-content-between">
                                               <a href="denyDownload/{{$list->download_id}}"><button type="button" class="btn btn-danger" data-dismiss="modal">Deny</button></a>
                                               <a href="confirmDownload/{{$list->download_id}}"><button type="submit" class="btn btn-primary">Confirm</button></a>
                                           </div>
-                                      </form>
                                   </div>
                               </div>
                           </div>
@@ -215,8 +213,49 @@
         </div>
       </div>
       <script>
-        //Bootstrap Duallistbox
-        $('.duallistbox').bootstrapDualListbox();
+        $(".search-product").on('keypress',function(e) {
+            if(e.which == 13) {
+            $.ajax({
+              type: "GET",
+              url: '/api/productList/'+$(this).val(),
+              data: '',
+              success:function(msg){
+                $("#product_pool").empty();
+                msg.forEach(function(value) {
+                  $("#product_pool").append('<option value='+value['product_id']+'>'+value['product_title']+'</option>');
+                });
+              },
+              error:function(msg){
+                console.log(msg);
+              }
+            });
+            }
+        });
+        $("#btn-add-selected").on("click", function(){
+          $('#product_pool option:selected').each(function(value){
+            $("#seleted_relation").append('<option value='+$(this).val()+'>'+$(this).html()+'</option>');
+            $(this).remove();
+          });
+        });
+        $("#btn-add-all").on("click", function(){
+          $('#product_pool').children().each(function(value){
+            $("#seleted_relation").append('<option value='+$(this).val()+'>'+$(this).html()+'</option>');
+          });
+          $('#product_pool').empty();
+        });
+        
+        $("#btn-add-selected").on("click", function(){
+          $('#product_pool option:selected').each(function(value){
+            $("#seleted_relation").append('<option value='+$(this).val()+'>'+$(this).html()+'</option>');
+            $(this).remove();
+          });
+        });
+        $("#btn-add-all").on("click", function(){
+          $('#product_pool').children().each(function(value){
+            $("#seleted_relation").append('<option value='+$(this).val()+'>'+$(this).html()+'</option>');
+          });
+          $('#product_pool').empty();
+        });
       </script>
     </section>
 @endsection

@@ -1,6 +1,7 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\ApiController;
 use App\Http\Controllers\SyncController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\Auth\LoginController;
@@ -34,6 +35,8 @@ Route::get('/downloadList/{keyword}/{amount}/{orderby}/{order}/{page}',[Download
 Route::post('/downloadActionByBatch',[DownloadListController::class, 'downloadActionByBatch'])->name('downloadList.downloadActionByBatch');
 
 Route::get('/productList/{keyword}/{amount}/{orderby}/{order}/{page}',[ProductListController::class, 'show'])->name('productList.show');
+
+Route::get('/api/productList/{keyword}',[ApiController::class, 'productList'])->name('api.productList');
 
 Route::middleware(['auth:sanctum', 'verified'])->get('/dashboard', function () {
     return view('dashboard');

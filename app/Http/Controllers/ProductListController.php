@@ -32,7 +32,6 @@ class ProductListController extends Controller
         {
             $data->$key = (object)$value;
         }
-        //dd($data);
         return view('product_list', compact('data', 'result', 'keyword', 'amount', 'orderby', 'order', 'page'));
     }
     
