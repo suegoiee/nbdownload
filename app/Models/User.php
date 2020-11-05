@@ -18,33 +18,18 @@ class User extends Authenticatable
     use Notifiable;
     use TwoFactorAuthenticatable;
 
+    const USER = 0;
     /**
      * The attributes that are mass assignable.
      *
      * @var array
      */
-    protected $table = 'cms_user';
-    public $timestamps = false;
-    protected $primaryKey = 'user_id';
+    protected $table = 'users';
+
     protected $fillable = [
-        'user_name',
-        'user_email',
-        'user_password',
-        'category_id',
-        'user_country',
-        'user_account',
-        'user_fullname',
-        'user_image',
-        'user_admin',
-        'user_actived',
-        'user_author',
-        'user_is_pm',
-        'user_department',
-        'user_last_login',
-        'user_create',
-        'user_modify',
-        'user_update',
-        'draft'
+        'name',
+        'email',
+        'password',
     ];
 
     /**
@@ -53,7 +38,7 @@ class User extends Authenticatable
      * @var array
      */
     protected $hidden = [
-        'user_password',
+        'password',
         'remember_token',
         'two_factor_recovery_codes',
         'two_factor_secret',
@@ -77,7 +62,8 @@ class User extends Authenticatable
         'profile_photo_url',
     ];
 
-    public function getAuthPassword() {
-        return $this->user_password;
-     }
+    public function isAdmin()
+    {
+      return $this->permission > self::USER;
+    }
 }

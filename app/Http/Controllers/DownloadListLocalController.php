@@ -8,7 +8,7 @@ use App\Models\cms\CmsDownloadTmp;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
-class HomeController extends Controller
+class DownloadListLocalController extends Controller
 {    
     public function index(Request $request, $status, $keyword, $amount, $orderby, $order)
     {
@@ -19,7 +19,7 @@ class HomeController extends Controller
             $amount = Route::current()->parameter('amount');
             $orderby = Route::current()->parameter('orderby');
             $order = Route::current()->parameter('order');
-            return redirect()->route('data', ['status'=>$status, 'keyword'=>$request->search, 'amount' => $amount, 'orderby' => $orderby, 'order' => $order]);
+            return redirect()->route('downloadListLocal.show', ['status'=>$status, 'keyword'=>$request->search, 'amount' => $amount, 'orderby' => $orderby, 'order' => $order]);
         }
 
         $data = new CmsDownloadTmp;
@@ -41,6 +41,6 @@ class HomeController extends Controller
         }
         // dd($data = $data->orderby($orderby, $order)->first());
         $data = $data->orderby($orderby, $order)->paginate($amount);
-        return view('download_list', compact('data', 'status', 'keyword', 'amount', 'orderby', 'order'));
+        return view('local_download_list', compact('data', 'status', 'keyword', 'amount', 'orderby', 'order'));
     }
 }

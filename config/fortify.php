@@ -46,11 +46,11 @@ return [
     |
     */
 
-    'username' => 'user_email',
+    'username' => 'email',
 
-    'email' => 'user_email',
+    'email' => 'email',
 
-    'password' => 'user_password',
+    'password' => 'password',
 
     /*
     |--------------------------------------------------------------------------

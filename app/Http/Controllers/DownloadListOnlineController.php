@@ -6,7 +6,7 @@ use App\Models\cms\CmsDownloadTmp;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
-class DownloadListController extends Controller
+class DownloadListOnlineController extends Controller
 {    
     public function show(Request $request, $keyword, $amount, $orderby, $order, $page)
     {
@@ -14,7 +14,7 @@ class DownloadListController extends Controller
             $amount = Route::current()->parameter('amount');
             $orderby = Route::current()->parameter('orderby');
             $order = Route::current()->parameter('order');
-            return redirect()->route('downloadList.show', ['keyword'=>$request->search, 'amount' => $amount, 'orderby' => $orderby, 'order' => $order, 'page' => '1']);
+            return redirect()->route('downloadListOnline.show', ['keyword'=>$request->search, 'amount' => $amount, 'orderby' => $orderby, 'order' => $order, 'page' => '1']);
         }
         $list = array(
             'search'=>$keyword, 

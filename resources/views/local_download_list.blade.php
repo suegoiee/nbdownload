@@ -1,6 +1,7 @@
 @section('home-menu', 'menu-open')
 @section('home-href', 'active')
-@section('all_data', 'active')
+@section('download_tmp', 'active')
+@section('title', 'Local Download')
 
 @extends('layouts.base')
 
@@ -24,28 +25,46 @@
         transform: rotate(-135deg);
         -webkit-transform: rotate(-135deg);
     }
+    .page-title{
+      position: relative; 
+      float: left;
+    }
+    .table-title{
+      position: relative; 
+      float: left;
+      padding-left: 10px;
+    }
+    .table-search{
+      position: relative; 
+      float: right;
+    }
+    .btn-batch{
+      position: relative; 
+      float: left;
+      margin-left: 30px;
+    }
 </style>
     <section class="content-header">
       <div class="container-fluid">
         <div class="row mb-2">
           <div class="col-sm-6">
-            <h1>All Data</h1>
-            <form class="form-inline ml-3" style="position: absolute; left: 15%; top: 7px;">
+            <h1 class="page-title">Local Download Data</h1>
+            <form class="form-inline ml-3 page-title">
                 <div class="input-group input-group-sm">
                     <p>data status &nbsp</p>
                     <select class="form-control" name="country" onchange="location = this.value;">
-                        <option value="{{route('data', ['status'=>'all', 'keyword'=>$keyword, 'amount' => $amount, 'orderby' => $orderby, 'order' => $order])}}" {{$status == 'all' ? 'selected' : ''}}>All Data</option>
-                        <option value="{{route('data', ['status'=>'NCND', 'keyword'=>$keyword, 'amount' => $amount, 'orderby' => $orderby, 'order' => $order])}}" {{$status == 'NCND' ? 'selected' : ''}}>NCND</option>
-                        <option value="{{route('data', ['status'=>'confirmed', 'keyword'=>$keyword, 'amount' => $amount, 'orderby' => $orderby, 'order' => $order])}}" {{$status == 'confirmed' ? 'selected' : ''}}>Confirmed</option>
-                        <option value="{{route('data', ['status'=>'denied', 'keyword'=>$keyword, 'amount' => $amount, 'orderby' => $orderby, 'order' => $order])}}" {{$status == 'denied' ? 'selected' : ''}}>Denied</option>
+                        <option value="{{route('downloadListLocal.show', ['status'=>'all', 'keyword'=>$keyword, 'amount' => $amount, 'orderby' => $orderby, 'order' => $order])}}" {{$status == 'all' ? 'selected' : ''}}>All Data</option>
+                        <option value="{{route('downloadListLocal.show', ['status'=>'NCND', 'keyword'=>$keyword, 'amount' => $amount, 'orderby' => $orderby, 'order' => $order])}}" {{$status == 'NCND' ? 'selected' : ''}}>NCND</option>
+                        <option value="{{route('downloadListLocal.show', ['status'=>'confirmed', 'keyword'=>$keyword, 'amount' => $amount, 'orderby' => $orderby, 'order' => $order])}}" {{$status == 'confirmed' ? 'selected' : ''}}>Confirmed</option>
+                        <option value="{{route('downloadListLocal.show', ['status'=>'denied', 'keyword'=>$keyword, 'amount' => $amount, 'orderby' => $orderby, 'order' => $order])}}" {{$status == 'denied' ? 'selected' : ''}}>Denied</option>
                     </select>
                 </div>
             </form>
           </div>
           <div class="col-sm-6">
             <ol class="breadcrumb float-sm-right">
-              <li class="breadcrumb-item"><a href="#">Home</a></li>
-              <li class="breadcrumb-item active">All Data</li>
+              <li class="breadcrumb-item"><a href="{{route('home.index')}}">Home</a></li>
+              <li class="breadcrumb-item active">Local Download Data</li>
             </ol>
           </div>
         </div>
@@ -57,8 +76,23 @@
           <div class="col-12">
             <div class="card">
               <div class="card-header">
-                <h3 class="card-title">ALL Data</h3>
-                <form class="form-inline ml-3" style="position: absolute; right: 15px; bottom: 7px;">
+                <h3 class="card-title">Local Download Data</h3>
+                <form class="form-inline ml-3 table-title">
+                    <input type="hidden" id="csrf" value="{{csrf_token()}}">
+                    <div class="input-group input-group-sm">
+                        <p>show &nbsp</p>
+                        <select class="form-control" name="country" onchange="location = this.value;">
+                            <option value="{{route('downloadListLocal.show', ['status'=>$status, 'keyword'=>$keyword, 'amount' => '5', 'orderby' => $orderby, 'order' => $order])}}" {{$amount == 5 ? 'selected' : ''}}>5</option>
+                            <option value="{{route('downloadListLocal.show', ['status'=>$status, 'keyword'=>$keyword, 'amount' => '15', 'orderby' => $orderby, 'order' => $order])}}" {{$amount == 15 ? 'selected' : ''}}>15</option>
+                            <option value="{{route('downloadListLocal.show', ['status'=>$status, 'keyword'=>$keyword, 'amount' => '50', 'orderby' => $orderby, 'order' => $order])}}" {{$amount == 50 ? 'selected' : ''}}>50</option>
+                            <option value="{{route('downloadListLocal.show', ['status'=>$status, 'keyword'=>$keyword, 'amount' => '100', 'orderby' => $orderby, 'order' => $order])}}" {{$amount == 100 ? 'selected' : ''}}>100</option>
+                        </select>
+                        <p>&nbsp data per page</p>
+                        <button type="submit" form="downloadActionByBatch" class="btn btn-warning btn-batch" data-dismiss="modal" name="action" value="deny">Deny by batch</button>
+                        <button type="submit" form="downloadActionByBatch" class="btn btn-success btn-batch" data-dismiss="modal" name="action" value="NCND">NCND by batch</button>
+                    </div>
+                </form>
+                <form class="form-inline ml-3 table-search">
                     <div class="input-group input-group-sm">
                         <input class="form-control" type="search" placeholder="Search" aria-label="Search" name="search">
                         <div class="input-group-append">
@@ -68,36 +102,21 @@
                         </div>
                     </div>
                 </form>
-                <form class="form-inline ml-3" style="position: absolute; left: 15%; top: 7px;">
-                    <input type="hidden" id="csrf" value="{{csrf_token()}}">
-                    <div class="input-group input-group-sm">
-                        <p>show &nbsp</p>
-                        <select class="form-control" name="country" onchange="location = this.value;">
-                            <option value="{{route('data', ['status'=>$status, 'keyword'=>$keyword, 'amount' => '5', 'orderby' => $orderby, 'order' => $order])}}" {{$amount == 5 ? 'selected' : ''}}>5</option>
-                            <option value="{{route('data', ['status'=>$status, 'keyword'=>$keyword, 'amount' => '15', 'orderby' => $orderby, 'order' => $order])}}" {{$amount == 15 ? 'selected' : ''}}>15</option>
-                            <option value="{{route('data', ['status'=>$status, 'keyword'=>$keyword, 'amount' => '50', 'orderby' => $orderby, 'order' => $order])}}" {{$amount == 50 ? 'selected' : ''}}>50</option>
-                            <option value="{{route('data', ['status'=>$status, 'keyword'=>$keyword, 'amount' => '100', 'orderby' => $orderby, 'order' => $order])}}" {{$amount == 100 ? 'selected' : ''}}>100</option>
-                        </select>
-                        <p>&nbsp data per page</p>
-                        <button type="submit" form="downloadActionByBatch" class="btn btn-warning btn-batch" data-dismiss="modal" name="action" value="deny">Deny by batch</button>
-                        <button type="submit" form="downloadActionByBatch" class="btn btn-success btn-batch" data-dismiss="modal" name="action" value="NCND">NCND by batch</button>
-                    </div>
-                </form>
               </div>
               <div class="card-body">
                 <table class="table table-bordered table-striped">
                   <thead>
                   <tr>
                     <th>Select</th>
-                    <th><a href="{{route('data', ['status'=>$status, 'keyword'=>$keyword, 'amount' => $amount, 'orderby' => 'tmp_title', 'order' => $order == 'ASC' && $orderby == 'tmp_title' ? 'DESC' : 'ASC'])}}">Title<i class="{{$orderby == 'tmp_title' ? $order : ''}}"></i></a></th>
-                    <th><a href="{{route('data', ['status'=>$status, 'keyword'=>$keyword, 'amount' => $amount, 'orderby' => 'tmp_marketing_name', 'order' => $order == 'ASC' && $orderby == 'tmp_marketing_name' ? 'DESC' : 'ASC'])}}">Marketing Name<i class="{{$orderby == 'tmp_marketing_name' ? $order : ''}}"></i></a></th>
-                    <th><a href="{{route('data', ['status'=>$status, 'keyword'=>$keyword, 'amount' => $amount, 'orderby' => 'tmp_prd_model_name', 'order' => $order == 'ASC' && $orderby == 'tmp_prd_model_name' ? 'DESC' : 'ASC'])}}">Model Name<i class="{{$orderby == 'tmp_prd_model_name' ? $order : ''}}"></i></a></th>
-                    <th><a href="{{route('data', ['status'=>$status, 'keyword'=>$keyword, 'amount' => $amount, 'orderby' => 'tmp_device', 'order' => $order == 'ASC' && $orderby == 'tmp_device' ? 'DESC' : 'ASC'])}}">Device<i class="{{$orderby == 'tmp_device' ? $order : ''}}"></i></a></th>
-                    <th><a href="{{route('data', ['status'=>$status, 'keyword'=>$keyword, 'amount' => $amount, 'orderby' => 'tmp_version', 'order' => $order == 'ASC' && $orderby == 'tmp_version' ? 'DESC' : 'ASC'])}}">Version<i class="{{$orderby == 'tmp_version' ? $order : ''}}"></i></a></th>
-                    <th><a href="{{route('data', ['status'=>$status, 'keyword'=>$keyword, 'amount' => $amount, 'orderby' => 'tmp_packageVersion', 'order' => $order == 'ASC' && $orderby == 'tmp_packageVersion' ? 'DESC' : 'ASC'])}}">Package Version<i class="{{$orderby == 'tmp_packageVersion' ? $order : ''}}"></i></a></th>
-                    <th><a href="{{route('data', ['status'=>$status, 'keyword'=>$keyword, 'amount' => $amount, 'orderby' => 'tmp_os', 'order' => $order == 'ASC' && $orderby == 'tmp_os' ? 'DESC' : 'ASC'])}}">OS<i class="{{$orderby == 'tmp_os' ? $order : ''}}"></i></a></th>
-                    <th><a href="{{route('data', ['status'=>$status, 'keyword'=>$keyword, 'amount' => $amount, 'orderby' => 'tmp_osImage', 'order' => $order == 'ASC' && $orderby == 'tmp_osImage' ? 'DESC' : 'ASC'])}}">OS Image<i class="{{$orderby == 'tmp_osImage' ? $order : ''}}"></i></a></th>
-                    <th><a href="{{route('data', ['status'=>$status, 'keyword'=>$keyword, 'amount' => $amount, 'orderby' => 'tmp_crc', 'order' => $order == 'ASC' && $orderby == 'tmp_crc' ? 'DESC' : 'ASC'])}}">CRC<i class="{{$orderby == 'tmp_crc' ? $order : ''}}"></i></a></th>
+                    <th><a href="{{route('downloadListLocal.show', ['status'=>$status, 'keyword'=>$keyword, 'amount' => $amount, 'orderby' => 'tmp_title', 'order' => $order == 'ASC' && $orderby == 'tmp_title' ? 'DESC' : 'ASC'])}}">Title<i class="{{$orderby == 'tmp_title' ? $order : ''}}"></i></a></th>
+                    <th><a href="{{route('downloadListLocal.show', ['status'=>$status, 'keyword'=>$keyword, 'amount' => $amount, 'orderby' => 'tmp_marketing_name', 'order' => $order == 'ASC' && $orderby == 'tmp_marketing_name' ? 'DESC' : 'ASC'])}}">Marketing Name<i class="{{$orderby == 'tmp_marketing_name' ? $order : ''}}"></i></a></th>
+                    <th><a href="{{route('downloadListLocal.show', ['status'=>$status, 'keyword'=>$keyword, 'amount' => $amount, 'orderby' => 'tmp_prd_model_name', 'order' => $order == 'ASC' && $orderby == 'tmp_prd_model_name' ? 'DESC' : 'ASC'])}}">Model Name<i class="{{$orderby == 'tmp_prd_model_name' ? $order : ''}}"></i></a></th>
+                    <th><a href="{{route('downloadListLocal.show', ['status'=>$status, 'keyword'=>$keyword, 'amount' => $amount, 'orderby' => 'tmp_device', 'order' => $order == 'ASC' && $orderby == 'tmp_device' ? 'DESC' : 'ASC'])}}">Device<i class="{{$orderby == 'tmp_device' ? $order : ''}}"></i></a></th>
+                    <th><a href="{{route('downloadListLocal.show', ['status'=>$status, 'keyword'=>$keyword, 'amount' => $amount, 'orderby' => 'tmp_version', 'order' => $order == 'ASC' && $orderby == 'tmp_version' ? 'DESC' : 'ASC'])}}">Version<i class="{{$orderby == 'tmp_version' ? $order : ''}}"></i></a></th>
+                    <th><a href="{{route('downloadListLocal.show', ['status'=>$status, 'keyword'=>$keyword, 'amount' => $amount, 'orderby' => 'tmp_packageVersion', 'order' => $order == 'ASC' && $orderby == 'tmp_packageVersion' ? 'DESC' : 'ASC'])}}">Package Version<i class="{{$orderby == 'tmp_packageVersion' ? $order : ''}}"></i></a></th>
+                    <th><a href="{{route('downloadListLocal.show', ['status'=>$status, 'keyword'=>$keyword, 'amount' => $amount, 'orderby' => 'tmp_os', 'order' => $order == 'ASC' && $orderby == 'tmp_os' ? 'DESC' : 'ASC'])}}">OS<i class="{{$orderby == 'tmp_os' ? $order : ''}}"></i></a></th>
+                    <th><a href="{{route('downloadListLocal.show', ['status'=>$status, 'keyword'=>$keyword, 'amount' => $amount, 'orderby' => 'tmp_osImage', 'order' => $order == 'ASC' && $orderby == 'tmp_osImage' ? 'DESC' : 'ASC'])}}">OS Image<i class="{{$orderby == 'tmp_osImage' ? $order : ''}}"></i></a></th>
+                    <th><a href="{{route('downloadListLocal.show', ['status'=>$status, 'keyword'=>$keyword, 'amount' => $amount, 'orderby' => 'tmp_crc', 'order' => $order == 'ASC' && $orderby == 'tmp_crc' ? 'DESC' : 'ASC'])}}">CRC<i class="{{$orderby == 'tmp_crc' ? $order : ''}}"></i></a></th>
                     <th>Action</th>
                   </tr>
                   </thead>
@@ -120,7 +139,7 @@
                               <div class="modal fade" id="modal-{{$download_data->tmp_no}}">
                                   <div class="modal-dialog">
                                       <div class="modal-content">
-                                          <form style="display:none" action="/confirmDownload" method="POST" id="confirmDownload-{{$download_data->tmp_no}}">
+                                          <form action="/confirmDownload" method="POST" id="confirmDownload-{{$download_data->tmp_no}}">
                                               @csrf
                                               <div class="modal-header">
                                                   <h4 class="modal-title">Warning</h4>
@@ -173,15 +192,15 @@
                   <tfoot>
                   <tr>
                     <th>Select</th>
-                    <th><a href="{{route('data', ['status'=>$status, 'keyword'=>$keyword, 'amount' => $amount, 'orderby' => 'tmp_title', 'order' => $order == 'ASC' && $orderby == 'tmp_title' ? 'DESC' : 'ASC'])}}">Title<i class="{{$orderby == 'tmp_title' ? $order : ''}}"></i></a></th>
-                    <th><a href="{{route('data', ['status'=>$status, 'keyword'=>$keyword, 'amount' => $amount, 'orderby' => 'tmp_marketing_name', 'order' => $order == 'ASC' && $orderby == 'tmp_marketing_name' ? 'DESC' : 'ASC'])}}">Marketing Name<i class="{{$orderby == 'tmp_marketing_name' ? $order : ''}}"></i></a></th>
-                    <th><a href="{{route('data', ['status'=>$status, 'keyword'=>$keyword, 'amount' => $amount, 'orderby' => 'tmp_prd_model_name', 'order' => $order == 'ASC' && $orderby == 'tmp_prd_model_name' ? 'DESC' : 'ASC'])}}">Model Name<i class="{{$orderby == 'tmp_prd_model_name' ? $order : ''}}"></i></a></th>
-                    <th><a href="{{route('data', ['status'=>$status, 'keyword'=>$keyword, 'amount' => $amount, 'orderby' => 'tmp_device', 'order' => $order == 'ASC' && $orderby == 'tmp_device' ? 'DESC' : 'ASC'])}}">Device<i class="{{$orderby == 'tmp_device' ? $order : ''}}"></i></a></th>
-                    <th><a href="{{route('data', ['status'=>$status, 'keyword'=>$keyword, 'amount' => $amount, 'orderby' => 'tmp_version', 'order' => $order == 'ASC' && $orderby == 'tmp_version' ? 'DESC' : 'ASC'])}}">Version<i class="{{$orderby == 'tmp_version' ? $order : ''}}"></i></a></th>
-                    <th><a href="{{route('data', ['status'=>$status, 'keyword'=>$keyword, 'amount' => $amount, 'orderby' => 'tmp_packageVersion', 'order' => $order == 'ASC' && $orderby == 'tmp_packageVersion' ? 'DESC' : 'ASC'])}}">Package Version<i class="{{$orderby == 'tmp_packageVersion' ? $order : ''}}"></i></a></th>
-                    <th><a href="{{route('data', ['status'=>$status, 'keyword'=>$keyword, 'amount' => $amount, 'orderby' => 'tmp_os', 'order' => $order == 'ASC' && $orderby == 'tmp_os' ? 'DESC' : 'ASC'])}}">OS<i class="{{$orderby == 'tmp_os' ? $order : ''}}"></i></a></th>
-                    <th><a href="{{route('data', ['status'=>$status, 'keyword'=>$keyword, 'amount' => $amount, 'orderby' => 'tmp_osImage', 'order' => $order == 'ASC' && $orderby == 'tmp_osImage' ? 'DESC' : 'ASC'])}}">OS Image<i class="{{$orderby == 'tmp_osImage' ? $order : ''}}"></i></a></th>
-                    <th><a href="{{route('data', ['status'=>$status, 'keyword'=>$keyword, 'amount' => $amount, 'orderby' => 'tmp_crc', 'order' => $order == 'ASC' && $orderby == 'tmp_crc' ? 'DESC' : 'ASC'])}}">CRC<i class="{{$orderby == 'tmp_crc' ? $order : ''}}"></i></a></th>
+                    <th><a href="{{route('downloadListLocal.show', ['status'=>$status, 'keyword'=>$keyword, 'amount' => $amount, 'orderby' => 'tmp_title', 'order' => $order == 'ASC' && $orderby == 'tmp_title' ? 'DESC' : 'ASC'])}}">Title<i class="{{$orderby == 'tmp_title' ? $order : ''}}"></i></a></th>
+                    <th><a href="{{route('downloadListLocal.show', ['status'=>$status, 'keyword'=>$keyword, 'amount' => $amount, 'orderby' => 'tmp_marketing_name', 'order' => $order == 'ASC' && $orderby == 'tmp_marketing_name' ? 'DESC' : 'ASC'])}}">Marketing Name<i class="{{$orderby == 'tmp_marketing_name' ? $order : ''}}"></i></a></th>
+                    <th><a href="{{route('downloadListLocal.show', ['status'=>$status, 'keyword'=>$keyword, 'amount' => $amount, 'orderby' => 'tmp_prd_model_name', 'order' => $order == 'ASC' && $orderby == 'tmp_prd_model_name' ? 'DESC' : 'ASC'])}}">Model Name<i class="{{$orderby == 'tmp_prd_model_name' ? $order : ''}}"></i></a></th>
+                    <th><a href="{{route('downloadListLocal.show', ['status'=>$status, 'keyword'=>$keyword, 'amount' => $amount, 'orderby' => 'tmp_device', 'order' => $order == 'ASC' && $orderby == 'tmp_device' ? 'DESC' : 'ASC'])}}">Device<i class="{{$orderby == 'tmp_device' ? $order : ''}}"></i></a></th>
+                    <th><a href="{{route('downloadListLocal.show', ['status'=>$status, 'keyword'=>$keyword, 'amount' => $amount, 'orderby' => 'tmp_version', 'order' => $order == 'ASC' && $orderby == 'tmp_version' ? 'DESC' : 'ASC'])}}">Version<i class="{{$orderby == 'tmp_version' ? $order : ''}}"></i></a></th>
+                    <th><a href="{{route('downloadListLocal.show', ['status'=>$status, 'keyword'=>$keyword, 'amount' => $amount, 'orderby' => 'tmp_packageVersion', 'order' => $order == 'ASC' && $orderby == 'tmp_packageVersion' ? 'DESC' : 'ASC'])}}">Package Version<i class="{{$orderby == 'tmp_packageVersion' ? $order : ''}}"></i></a></th>
+                    <th><a href="{{route('downloadListLocal.show', ['status'=>$status, 'keyword'=>$keyword, 'amount' => $amount, 'orderby' => 'tmp_os', 'order' => $order == 'ASC' && $orderby == 'tmp_os' ? 'DESC' : 'ASC'])}}">OS<i class="{{$orderby == 'tmp_os' ? $order : ''}}"></i></a></th>
+                    <th><a href="{{route('downloadListLocal.show', ['status'=>$status, 'keyword'=>$keyword, 'amount' => $amount, 'orderby' => 'tmp_osImage', 'order' => $order == 'ASC' && $orderby == 'tmp_osImage' ? 'DESC' : 'ASC'])}}">OS Image<i class="{{$orderby == 'tmp_osImage' ? $order : ''}}"></i></a></th>
+                    <th><a href="{{route('downloadListLocal.show', ['status'=>$status, 'keyword'=>$keyword, 'amount' => $amount, 'orderby' => 'tmp_crc', 'order' => $order == 'ASC' && $orderby == 'tmp_crc' ? 'DESC' : 'ASC'])}}">CRC<i class="{{$orderby == 'tmp_crc' ? $order : ''}}"></i></a></th>
                     <th>Action</th>
                   </tr>
                   </tfoot>

@@ -24535,7 +24535,7 @@ var staticRenderFns = [
       { staticClass: "ml-4 text-lg text-gray-600 leading-7 font-semibold" },
       [
         _c("a", { attrs: { href: "https://laracasts.com" } }, [
-          _vm._v("Laracastssssss")
+          _vm._v("Laracasts")
         ])
       ]
     )
