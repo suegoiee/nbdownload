@@ -22,7 +22,7 @@ use App\Http\Controllers\DownloadListOnlineController;
 Route::post('login', [LoginController::class, 'authenticate']);
 
 Route::get('/', function () {
-    return redirect()->route('downloadListLocal.show', ['status'=>'all', 'keyword'=>'all-data', 'amount' => '15', 'orderby' => 'tmp_title', 'order' => 'ASC']);
+    return redirect()->route('downloadListLocal.show', ['status'=>'NCND', 'keyword'=>'all-data', 'amount' => '15', 'orderby' => 'tmp_title', 'order' => 'ASC']);
 })->name('home.index');
 
 Route::prefix('onlineHandShake')->name('onlineHandShake')->middleware('auth')->group(function () {
@@ -32,6 +32,7 @@ Route::prefix('onlineHandShake')->name('onlineHandShake')->middleware('auth')->g
 
 Route::prefix('downloadListLocal')->name('downloadListLocal')->middleware('auth')->group(function () {
     Route::get('/{status}/{keyword}/{amount}/{orderby}/{order}',[DownloadListLocalController::class, 'index'])->name('.show');
+    Route::post('/downloadActionByBatch',[DownloadListLocalController::class, 'downloadActionByBatch'])->name('.downloadActionByBatch');
     Route::get('/export/{status}/{keyword}/{amount}/{orderby}/{order}',[DownloadListLocalController::class, 'export'])->name('.export');
 });
 
@@ -41,7 +42,6 @@ Route::prefix('sync')->name('sync')->middleware('auth')->group(function () {
 
 Route::prefix('downloadListOnline')->name('downloadListOnline')->middleware('auth')->group(function () {
     Route::get('/{keyword}/{amount}/{orderby}/{order}/{page}',[DownloadListOnlineController::class, 'show'])->name('.show');
-    Route::post('/downloadActionByBatch',[DownloadListOnlineController::class, 'downloadActionByBatch'])->name('downloadList.downloadActionByBatch');
     Route::get('/export/{keyword}/{amount}/{orderby}/{order}/{page}',[DownloadListOnlineController::class, 'export'])->name('.export');
 });
 

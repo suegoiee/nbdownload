@@ -28,6 +28,20 @@
     .model-group{
         margin: 45px;
     }
+    .table-title{
+      position: relative; 
+      float: left;
+      padding-left: 10px;
+    }
+    .table-search{
+      position: relative; 
+      float: right;
+    }
+    .table-control-button{
+      position: relative; 
+      float: left;
+      margin-left: 30px;
+    }
 </style>
     <section class="content-header">
       <div class="container-fluid">
@@ -51,7 +65,7 @@
             <div class="card">
               <div class="card-header">
                 <h3 class="card-title">Online Downloads</h3>
-                <form class="form-inline ml-3" style="position: absolute; right: 15px; bottom: 7px;">
+                <form class="form-inline ml-3 table-search">
                     <div class="input-group input-group-sm">
                         <input class="form-control" type="search" placeholder="Search" aria-label="Search" name="search">
                         <div class="input-group-append">
@@ -61,7 +75,7 @@
                         </div>
                     </div>
                 </form>
-                <form class="form-inline ml-3" style="position: absolute; left: 15%; top: 7px;">
+                <form class="form-inline ml-3 table-title">
                     <div class="input-group input-group-sm">
                         <p>show &nbsp</p>
                         <select class="form-control" name="country" onchange="location = this.value;">
@@ -71,6 +85,7 @@
                             <option value="{{route('downloadListOnline.show', ['keyword'=>$keyword, 'amount' => '100', 'orderby' => $orderby, 'order' => $order, 'page' => '1'])}}" {{$amount == 100 ? 'selected' : ''}}>100</option>
                         </select>
                         <p>&nbsp data per page</p>
+                        <a href="{{route('downloadListOnline.export', ['keyword'=>$keyword, 'amount' => $amount, 'orderby' => $orderby, 'order' => $order, 'page' => $page])}}"><button type="button" class="btn btn-danger table-control-button">Export CSV</button></a>
                     </div>
                 </form>
               </div>

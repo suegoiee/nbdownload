@@ -43,6 +43,7 @@ class DownloadListLocalController extends Controller
         $data = $data->orderby($orderby, $order)->paginate($amount);
         return view('local_download_list', compact('data', 'status', 'keyword', 'amount', 'orderby', 'order'));
     }
+
     public function export(Request $request, $status, $keyword, $amount, $orderby, $order)
     {
         $data_status = ['NCND' => 2, 'confirmed' => 1, 'denied' => 0];
@@ -65,41 +66,23 @@ class DownloadListLocalController extends Controller
                     });
         }
         $data = $data->orderby($orderby, $order)->paginate($amount);
-        $export['title'] = 'Local-Download-List'.date('Y-m-d_H:i:s');
+        $export['title'] = 'Local-Download-List-'.date('Y-m-d_H:i:s');
         $export['head'] = ['Title', 'Marketing name', 'Model Name', 'Device', 'Version', 'Package Version', 'OS', 'OS Image', 'CRC'];
         $export['content'] = array();
         foreach($data as $td){
             array_push($export['content'], ['0'=>$td->tmp_title, '1'=>$td->tmp_marketing_name, '2'=>$td->tmp_prd_model_name, '3'=>$td->tmp_device, '4'=>$td->tmp_version, '5'=>$td->tmp_packageVersion, '6'=>$td->tmp_os, '7'=>$td->tmp_osImage, '8'=>$td->tmp_crc] );
         }
-        // dd($export);
         exportCSVAction($export);
     }
-    
-    function exportCSVAction($request)
+
+    public function downloadActionByBatch(Request $request)
     {
-        $fileName = $request['title'];  //這裡定義表名。簡單點的就直接  $fileName = time();
-
-        header('Content-Type: application/vnd.ms-excel');   //header設定
-        header("Content-Disposition: attachment;filename=".$fileName.".csv");
-        header('Cache-Control: max-age=0');
-
-        $fp = fopen('php://output','a');    //開啟php檔案控制代碼，php://output表示直接輸出到PHP快取,a表示將輸出的內容追加到檔案末尾
-
-        $head = array('工號','部門名','崗位名','學員名','報名時間','狀態','課程建議');  //表頭資訊
-        foreach($request['head'] as $th){
-            array_push($head, iconv("UTF-8","GBK//IGNORE",$th));
+        $request->action == 'deny' ? $status = 0: $status = 2;
+        foreach($request->id as $id){
+            $download = CmsDownloadTmp::where('tmp_no', $id)->first();
+            $download->tmp_status = $status;
+            $download->save();
         }
-        fputcsv($fp,$head);  //fputcsv() 函式將行格式$head化為 CSV 並寫入一個開啟的檔案$fp。 
-
-        if (!empty($request['content'])) {  
-            $data = [];  //要匯出的資料的順序與表頭一致；提前將最後的值準備好（比如：時間戳轉為日期等）
-            foreach ($request['content'] as $tbodyKey => $tbody) {
-                foreach($tbody as $tdkey => $td){  //$item為一維陣列哦
-                    $data[$tdkey] = iconv("UTF-8","GBK//IGNORE",$td);  //轉為gbk的時候可能會遇到特殊字元‘-’之類的會報錯，加 ignore表示這個特殊字元直接忽略不做轉換。
-                }
-                fputcsv($fp,$data);
-            }
-            exit;  //記得加這個，不然會跳轉到某個頁面。
-        }
+        return print_r($request->all());
     }
 }

@@ -36,15 +36,27 @@ class DownloadListOnlineController extends Controller
         return view('online_download_list', compact('data', 'result', 'keyword', 'amount', 'orderby', 'order', 'page'));
     }
 
-    public function downloadActionByBatch(Request $request)
+    public function export($keyword, $amount, $orderby, $order, $page)
     {
-        $request->action == 'deny' ? $status = 0: $status = 2;
-        foreach($request->id as $id){
-            $download = CmsDownloadTmp::where('tmp_no', $id)->first();
-            $download->tmp_status = $status;
-            $download->save();
+        $list = array(
+            'search'=>$keyword, 
+            'amount' => $amount, 
+            'orderby' => $orderby, 
+            'order' => $order,
+            'page' => $page,
+            'API_KEY' => env('API_KEY')
+        );
+
+        $result = retrieve_data($list, 'POST', 'https://mtc.msi.com/api/v1/nb/get_downloadlist');
+        $export['title'] = 'Online-Download-List-'.date('Y-m-d_H:i:s');
+        $export['head'] = ['Title', 'Device', 'File', 'Size', 'Version', 'Package Version', 'CRC'];
+        $export['content'] = array();
+        // dd($result);
+        foreach($result['data'] as $td){
+            array_push($export['content'], ['0'=>$td['download_title'], '1'=>$td['download_deviceid'], '2'=>$td['download_file'], '3'=>$td['download_size'], '4'=>$td['download_version'], '5'=>$td['download_packageversion'], '6'=>$td['download_crc']] );
         }
-        return print_r($request->all());
+        //dd($export);
+        exportCSVAction($export);
     }
     
 }

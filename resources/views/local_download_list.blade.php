@@ -88,8 +88,12 @@
                             <option value="{{route('downloadListLocal.show', ['status'=>$status, 'keyword'=>$keyword, 'amount' => '100', 'orderby' => $orderby, 'order' => $order])}}" {{$amount == 100 ? 'selected' : ''}}>100</option>
                         </select>
                         <p>&nbsp data per page</p>
-                        <button type="submit" form="downloadActionByBatch" class="btn btn-warning btn-batch table-control-button" data-dismiss="modal" name="action" value="deny">Deny by batch</button>
-                        <button type="submit" form="downloadActionByBatch" class="btn btn-success btn-batch table-control-button" data-dismiss="modal" name="action" value="NCND">NCND by batch</button>
+                        @if($status == 'NCND')
+                          <button type="submit" form="downloadActionByBatch" class="btn btn-warning btn-batch table-control-button" data-dismiss="modal" name="action" value="deny">Deny by batch</button>
+                        @endif
+                        @if($status == 'denied')
+                          <button type="submit" form="downloadActionByBatch" class="btn btn-success btn-batch table-control-button" data-dismiss="modal" name="action" value="NCND">NCND by batch</button>
+                        @endif
                         <a href="{{route('downloadListLocal.export', ['status'=>$status, 'keyword'=>$keyword, 'amount' => $amount, 'orderby' => $orderby, 'order' => $order])}}{{ app('request')->input('page') != null ? '?page='.app('request')->input('page') : ''}}"><button type="button" class="btn btn-danger table-control-button">Export CSV</button></a>
                     </div>
                 </form>
@@ -123,8 +127,12 @@
                   </thead>
                   <tbody>
                       @foreach($data as $download_data)
-                          <tr>
-                              <td><input type="checkbox" class="downloadBatch" name="id[]" value="{{$download_data->tmp_no}}"></td>
+                          <tr class="{{$download_data->tmp_status == 0 ? 'table-danger' : ''}}">
+                              <td>
+                                @if($download_data->tmp_status != 1 && $status != 'all')
+                                  <input type="checkbox" class="downloadBatch" name="id[]" value="{{$download_data->tmp_no}}">
+                                @endif
+                              </td>
                               <td>{{$download_data->tmp_title}}</td>
                               <td>{{$download_data->tmp_marketing_name}}</td>
                               <td>{{$download_data->tmp_prd_model_name}}</td>
@@ -134,7 +142,7 @@
                               <td>{{$download_data->tmp_os}}</td>
                               <td>{{$download_data->tmp_osImage}}</td>
                               <td>{{$download_data->tmp_crc}}</td>
-                              <td><button type="button" class="btn btn-primary" data-toggle="modal" data-target="#modal-{{$download_data->tmp_no}}" {{$download_data->tmp_status != 1 ? '' : 'disabled'}}>Approve</button></td>
+                              <td><button type="button" class="btn btn-primary" data-toggle="modal" data-target="#modal-{{$download_data->tmp_no}}" {{$download_data->tmp_status == 2 ? '' : 'disabled'}}>Approve</button></td>
                           </tr>
                           @if( $download_data->tmp_status != 1 )
                               <div class="modal fade" id="modal-{{$download_data->tmp_no}}">
@@ -228,7 +236,7 @@
             });
             $.ajax({
               type: "POST",
-              url: '/downloadActionByBatch',
+              url: '/downloadListLocal/downloadActionByBatch',
               data: {
                 action:$(this).val(),
                 id:id
@@ -237,7 +245,7 @@
                 location.reload();
               },
               error:function(msg){
-                alert(msg);
+                console.log(msg);
               }
             });
           });

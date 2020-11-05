@@ -41,18 +41,18 @@
                 </a>
               </li>
               <li class="nav-item">
-                <a href="{{route('downloadListOnline.show', ['keyword'=>'all-data', 'amount' => '15', 'orderby' => 'download_id', 'order' => 'ASC', 'page' => 1])}}" class="nav-link @yield('download_online')">
+                <a href="{{route('downloadListOnline.show', ['keyword'=>'last-data', 'amount' => '15', 'orderby' => 'download_id', 'order' => 'DESC', 'page' => 1])}}" class="nav-link @yield('download_online')">
                   <i class="fas fa-globe nav-icon"></i>
                   <p>Online Download Data</p>
                 </a>
               </li>
               @can('admin')
-              <li class="nav-item">
-                <a href="{{route('productList.show', ['keyword'=>'all-data', 'amount' => '15', 'orderby' => 'product_id', 'order' => 'ASC', 'page' => 1])}}" class="nav-link @yield('products')">
-                  <i class="fas fa-calendar-check nav-icon"></i>
-                  <p>Products</p>
-                </a>
-              </li>
+                <li class="nav-item">
+                  <a href="{{route('productList.show', ['keyword'=>'all-data', 'amount' => '15', 'orderby' => 'product_id', 'order' => 'ASC', 'page' => 1])}}" class="nav-link @yield('products')">
+                    <i class="fas fa-calendar-check nav-icon"></i>
+                    <p>Products</p>
+                  </a>
+                </li>
               @endcan
             </ul>
           </li>

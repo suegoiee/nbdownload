@@ -34,5 +34,26 @@ class ProductListController extends Controller
         }
         return view('product_list', compact('data', 'result', 'keyword', 'amount', 'orderby', 'order', 'page'));
     }
+
+    public function export($keyword, $amount, $orderby, $order, $page)
+    {
+        $list = array(
+            'search'=>$keyword, 
+            'amount' => $amount, 
+            'orderby' => $orderby, 
+            'order' => $order,
+            'page' => $page,
+            'API_KEY' => env('API_KEY')
+        );
+
+        $result = retrieve_data($list, 'POST', 'https://mtc.msi.com/api/v1/nb/get_productlist');
+        $export['title'] = 'Product-List-'.date('Y-m-d_H:i:s');
+        $export['head'] = ['Title', 'Model Name', 'Status'];
+        $export['content'] = array();
+        foreach($result['data'] as $td){
+            array_push($export['content'], ['0'=>$td['product_title'], '1'=>$td['product_model_name'], '2'=>$td['product_showed']] );
+        }
+        exportCSVAction($export);
+    }
     
 }

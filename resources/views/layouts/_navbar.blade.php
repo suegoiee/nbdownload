@@ -9,6 +9,9 @@
       <li class="nav-item d-none d-sm-inline-block">
         <a href="{{route('home.index')}}" class="nav-link">Home</a>
       </li>
+      <li class="nav-item d-none d-sm-inline-block">
+        <a href="{{route('sync')}}" class="nav-link" target="_blank">Sync</a>
+      </li>
     </ul>
 
   </nav>

@@ -9,7 +9,7 @@
 
         $fp = fopen('php://output','a');    //開啟php檔案控制代碼，php://output表示直接輸出到PHP快取,a表示將輸出的內容追加到檔案末尾
 
-        $head = array('工號','部門名','崗位名','學員名','報名時間','狀態','課程建議');  //表頭資訊
+        $head = array();  //表頭資訊
         foreach($request['head'] as $th){
             array_push($head, iconv("UTF-8","GBK//IGNORE",$th));
         }

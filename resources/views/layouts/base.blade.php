@@ -7,7 +7,7 @@
   <!-- Tell the browser to be responsive to screen width -->
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
-  <link rel="icon" href="{{asset('storage/img/msi-logo.png')}}" type="image/x-icon"/>
+  <link rel="icon" href="{{asset('storage/img/msi-gold.png')}}" type="image/x-icon"/>
   <!-- Font Awesome -->
   <link rel="stylesheet" href="{{asset('storage/third-party/fontawesome-free/css/all.min.css')}}">
   <!-- Ionicons -->
