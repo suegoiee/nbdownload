@@ -14,8 +14,8 @@ class AddPermissionToUsersTable extends Migration
     public function up()
     {
         Schema::table('users', function (Blueprint $table) {
-            $table->text('two_factor_secret')
-                    ->after('permission')
+            $table->text('permission')
+                    ->after('two_factor_secret')
                     ->nullable();
         });
     }

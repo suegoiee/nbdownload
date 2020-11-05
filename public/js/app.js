@@ -24614,7 +24614,7 @@ var render = function() {
                 [
                   _c(
                     "inertia-link",
-                    { attrs: { href: _vm.route("dashboard") } },
+                    { attrs: { href: _vm.route("home.index") } },
                     [
                       _c("jet-application-mark", {
                         staticClass: "block h-9 w-auto"
@@ -24634,7 +24634,7 @@ var render = function() {
                     "jet-nav-link",
                     {
                       attrs: {
-                        href: _vm.route("dashboard"),
+                        href: _vm.route("home.index"),
                         active: _vm.route().current("dashboard")
                       }
                     },
@@ -25023,7 +25023,7 @@ var render = function() {
                   "jet-responsive-nav-link",
                   {
                     attrs: {
-                      href: _vm.route("dashboard"),
+                      href: _vm.route("home.index"),
                       active: _vm.route().current("dashboard")
                     }
                   },

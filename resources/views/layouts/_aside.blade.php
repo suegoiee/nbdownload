@@ -10,12 +10,14 @@
     <div class="sidebar">
       <!-- Sidebar user (optional) -->
       <div class="user-panel mt-3 pb-3 mb-3 d-flex">
-        <div class="image">
-          <img src="{{asset('storage/img/notebook-team-logo.png')}}" class="img-circle elevation-2" alt="User Image">
-        </div>
-        <div class="info">
-          <a href="#" class="d-block">Notebook Team</a>
-        </div>
+        <a href="/user/profile" class="d-block">
+          <div class="image">
+            <img src="{{asset('storage/img/notebook-team-logo.png')}}" class="img-circle elevation-2" alt="User Image">
+          </div>
+          <div class="info">
+            <a href="/user/profile" class="d-block">{{Auth::user()->name}}</a>
+          </div>
+        </a>
       </div>
 
       <!-- Sidebar Menu -->
@@ -34,20 +36,20 @@
             <ul class="nav nav-treeview">
               <li class="nav-item">
                 <a href="{{route('home.index')}}" class="nav-link @yield('download_tmp')">
-                  <i class="far fa-circle nav-icon"></i>
+                  <i class="fas fa-folder-open nav-icon"></i>
                   <p>Local Download Data</p>
                 </a>
               </li>
               <li class="nav-item">
                 <a href="{{route('downloadListOnline.show', ['keyword'=>'all-data', 'amount' => '15', 'orderby' => 'download_id', 'order' => 'ASC', 'page' => 1])}}" class="nav-link @yield('download_online')">
-                  <i class="far fa-circle nav-icon"></i>
+                  <i class="fas fa-globe nav-icon"></i>
                   <p>Online Download Data</p>
                 </a>
               </li>
               @can('admin')
               <li class="nav-item">
                 <a href="{{route('productList.show', ['keyword'=>'all-data', 'amount' => '15', 'orderby' => 'product_id', 'order' => 'ASC', 'page' => 1])}}" class="nav-link @yield('products')">
-                  <i class="far fa-circle nav-icon"></i>
+                  <i class="fas fa-calendar-check nav-icon"></i>
                   <p>Products</p>
                 </a>
               </li>
