@@ -32,7 +32,7 @@ class DownloadListOnlineController extends Controller
         {
             $data->$key = (object)$value;
         }
-        //dd($data);
+        // dd($data);
         return view('online_download_list', compact('data', 'result', 'keyword', 'amount', 'orderby', 'order', 'page'));
     }
 

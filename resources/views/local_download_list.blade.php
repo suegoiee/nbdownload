@@ -38,7 +38,7 @@
       position: relative; 
       float: right;
     }
-    .btn-batch{
+    .table-control-button{
       position: relative; 
       float: left;
       margin-left: 30px;
@@ -88,8 +88,9 @@
                             <option value="{{route('downloadListLocal.show', ['status'=>$status, 'keyword'=>$keyword, 'amount' => '100', 'orderby' => $orderby, 'order' => $order])}}" {{$amount == 100 ? 'selected' : ''}}>100</option>
                         </select>
                         <p>&nbsp data per page</p>
-                        <button type="submit" form="downloadActionByBatch" class="btn btn-warning btn-batch" data-dismiss="modal" name="action" value="deny">Deny by batch</button>
-                        <button type="submit" form="downloadActionByBatch" class="btn btn-success btn-batch" data-dismiss="modal" name="action" value="NCND">NCND by batch</button>
+                        <button type="submit" form="downloadActionByBatch" class="btn btn-warning btn-batch table-control-button" data-dismiss="modal" name="action" value="deny">Deny by batch</button>
+                        <button type="submit" form="downloadActionByBatch" class="btn btn-success btn-batch table-control-button" data-dismiss="modal" name="action" value="NCND">NCND by batch</button>
+                        <a href="{{route('downloadListLocal.export', ['status'=>$status, 'keyword'=>$keyword, 'amount' => $amount, 'orderby' => $orderby, 'order' => $order])}}{{ app('request')->input('page') != null ? '?page='.app('request')->input('page') : ''}}"><button type="button" class="btn btn-danger table-control-button">Export CSV</button></a>
                     </div>
                 </form>
                 <form class="form-inline ml-3 table-search">

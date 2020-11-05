@@ -25,6 +25,9 @@
         transform: rotate(-135deg);
         -webkit-transform: rotate(-135deg);
     }
+    .model-group{
+        margin: 45px;
+    }
 </style>
     <section class="content-header">
       <div class="container-fluid">
@@ -91,60 +94,96 @@
                               <td><button type="button" class="btn btn-primary" data-toggle="modal" data-target="#modal-{{$list->download_id}}">Edit</button></td>
                           </tr>
                           <div class="modal fade" id="modal-{{$list->download_id}}">
-                              <div class="modal-dialog modal-lg">
+                              <div class="modal-dialog modal-xl">
                                   <div class="modal-content">
-                                          <div class="modal-header">
-                                              <h4 class="modal-title">Warning</h4>
-                                              <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                                  <span aria-hidden="true">&times;</span>
-                                              </button>
+                                      <div class="modal-header">
+                                          <h4 class="modal-title">{{$list->download_title}}</h4>
+                                          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                              <span aria-hidden="true">&times;</span>
+                                          </button>
+                                      </div>
+                                      <div class="modal-body">
+
+                                          <div class="row model-group">
+                                            <div class="col-sm-10">
+                                              <form action="">
+                                                Title<input class="form-control" type="text" value="{{$list->download_title}}">
+                                                File Path<input class="form-control" type="text" value="{{$list->download_file}}">
+                                                Size<input class="form-control" type="text" value="{{$list->download_size}}">
+                                                OS<input class="form-control" type="text" value="{{$list->os_id}}">
+                                                Type<select class="form-control" type="text"></select>
+                                                Guid<input class="form-control" type="text" value="{{$list->download_guid}}">
+                                                CRC<input class="form-control" type="text" value="{{$list->download_crc}}">
+                                                Device ID<input class="form-control" type="text" value="{{$list->download_deviceid}}">
+                                                Upgrade Guid<input class="form-control" type="text" value="{{$list->download_upgradeguid}}">
+                                                Package Version<input class="form-control" type="text" value="{{$list->download_packageversion}}">
+                                                Version<input class="form-control" type="text" value="{{$list->download_version}}">
+                                                Description<textarea class="form-control" type="text">{!!$list->download_description!!}</textarea>
+                                                Description TW<textarea class="form-control" type="text">{!!$list->download_description_tw!!}</textarea>
+                                                Description CN<textarea class="form-control" type="text">{!!$list->download_description_cn!!}</textarea>
+                                                Note<input class="form-control" type="text" value="{{$list->download_note}}">
+                                                Note TW<input class="form-control" type="text" value="{{$list->download_note_tw}}">
+                                                Note CN<input class="form-control" type="text" value="{{$list->download_note_cn}}">
+                                                Other<input class="form-control" type="text" value="{{$list->download_other}}">
+                                                Reboot<input class="form-control" type="text" value="{{$list->download_reboot}}">
+                                                Release<input class="form-control" type="text" value="{{$list->download_release}}">
+                                                Show<select class="form-control" type="select">
+                                                    <option value="{{$list->download_showed}}" {{$list->download_showed == 0 ? 'selected' : ''}}>No show</option>
+                                                    <option value="{{$list->download_showed}}" {{$list->download_showed == 1 ? 'selected' : ''}}>Show</option>
+                                                </select>
+                                              </form>
+                                            </div>
                                           </div>
-                                          <div class="modal-body">
-                                              <div class="row">
-                                                <div class="input-group">
-                                                    <input class="form-control search-product" type="search" placeholder="Search" aria-label="Search" id="{{$list->download_id}}">
-                                                    <div class="input-group-append">
-                                                      <button class="btn btn-navbar" type="submit">
-                                                          <i class="fas fa-search"></i>
-                                                      </button>
-                                                    </div>
-                                                </div>
-                                                <div class="col-sm-5">
-                                                  <!-- Select multiple-->
-                                                  <div class="form-group">
-                                                    <label>Products</label>
-                                                    <button type="button" class="btn btn-default btn-add-all" value="{{$list->download_id}}">>></button>
-                                                    <select multiple class="form-control" id="product_pool-{{$list->download_id}}">
-                                                    </select>
+
+
+                                          <div class="row model-group">
+                                            <div class="col-sm-10">
+                                              <h4 class="modal-title">Model Relation</h4>
+                                              <div class="input-group">
+                                                  <input class="form-control search-product" type="search" placeholder="Search" aria-label="Search" id="{{$list->download_id}}">
+                                                  <div class="input-group-append">
+                                                    <button class="btn btn-navbar" type="submit">
+                                                        <i class="fas fa-search"></i>
+                                                    </button>
                                                   </div>
-                                                </div>
-                                                <div class="col-sm-2">
-                                                  <div class="form-group">
-                                                    <label>action</label>
-                                                    <div class="form-group">
-                                                      <button type="button" class="btn btn-default btn-add-selected" value="{{$list->download_id}}">></button>
-                                                      <br>
-                                                      <button type="button" class="btn btn-default btn-remove-selected" value="{{$list->download_id}}"><</button>
-                                                    </div>
-                                                  </div>
-                                                </div>
-                                                <div class="col-sm-5">
-                                                  <div class="form-group">
-                                                    <label>Product relation</label>
-                                                    <button type="button" class="btn btn-default btn-remove-all" value="{{$list->download_id}}">X</button>
-                                                    <select multiple class="form-control" id="seleted_relation-{{$list->download_id}}">
-                                                      @foreach($list->has_many_product as $relation)
-                                                        <option value="{{$relation['product_id']}}">{{$relation['product_title']}}</option>
-                                                      @endforeach
-                                                    </select>
-                                                  </div>
+                                              </div>
+                                            </div>
+                                            <div class="col-sm-4 ">
+                                              <!-- Select multiple-->
+                                              <div class="form-group">
+                                                <label>Products</label>
+                                                <button type="button" class="btn btn-default btn-add-all" value="{{$list->download_id}}">>></button>
+                                                <select multiple class="form-control" id="product_pool-{{$list->download_id}}" size="20">
+                                                </select>
+                                              </div>
+                                            </div>
+                                            <div class="col-sm-2">
+                                              <div class="form-group">
+                                                <label>action</label>
+                                                <div class="form-group">
+                                                  <button type="button" class="btn btn-default btn-add-selected" value="{{$list->download_id}}">></button>
+                                                  <br>
+                                                  <button type="button" class="btn btn-default btn-remove-selected" value="{{$list->download_id}}"><</button>
                                                 </div>
                                               </div>
+                                            </div>
+                                            <div class="col-sm-4">
+                                              <div class="form-group">
+                                                <label>Product relation</label>
+                                                <button type="button" class="btn btn-default btn-remove-all" value="{{$list->download_id}}">X</button>
+                                                <select multiple class="form-control" id="seleted_relation-{{$list->download_id}}" size="20">
+                                                  @foreach($list->has_many_product as $relation)
+                                                    <option value="{{$relation['product_id']}}">{{$relation['product_title']}}</option>
+                                                  @endforeach
+                                                </select>
+                                              </div>
+                                            </div>
                                           </div>
-                                          <div class="modal-footer justify-content-between">
-                                              <a href="denyDownload/{{$list->download_id}}"><button type="button" class="btn btn-danger" data-dismiss="modal">Deny</button></a>
-                                              <a href="confirmDownload/{{$list->download_id}}"><button type="submit" class="btn btn-primary">Confirm</button></a>
-                                          </div>
+                                      </div>
+                                      <div class="modal-footer justify-content-between">
+                                          <a href="denyDownload/{{$list->download_id}}"><button type="button" class="btn btn-danger" data-dismiss="modal">Deny</button></a>
+                                          <a href="confirmDownload/{{$list->download_id}}"><button type="submit" class="btn btn-primary">Confirm</button></a>
+                                      </div>
                                   </div>
                               </div>
                           </div>

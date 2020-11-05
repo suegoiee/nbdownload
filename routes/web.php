@@ -32,6 +32,7 @@ Route::prefix('onlineHandShake')->name('onlineHandShake')->middleware('auth')->g
 
 Route::prefix('downloadListLocal')->name('downloadListLocal')->middleware('auth')->group(function () {
     Route::get('/{status}/{keyword}/{amount}/{orderby}/{order}',[DownloadListLocalController::class, 'index'])->name('.show');
+    Route::get('/export/{status}/{keyword}/{amount}/{orderby}/{order}',[DownloadListLocalController::class, 'export'])->name('.export');
 });
 
 Route::prefix('sync')->name('sync')->middleware('auth')->group(function () {
@@ -41,10 +42,12 @@ Route::prefix('sync')->name('sync')->middleware('auth')->group(function () {
 Route::prefix('downloadListOnline')->name('downloadListOnline')->middleware('auth')->group(function () {
     Route::get('/{keyword}/{amount}/{orderby}/{order}/{page}',[DownloadListOnlineController::class, 'show'])->name('.show');
     Route::post('/downloadActionByBatch',[DownloadListOnlineController::class, 'downloadActionByBatch'])->name('downloadList.downloadActionByBatch');
+    Route::get('/export/{keyword}/{amount}/{orderby}/{order}/{page}',[DownloadListOnlineController::class, 'export'])->name('.export');
 });
 
 Route::prefix('productList')->name('productList')->middleware(['auth', 'admin'])->group(function () {
     Route::get('/{keyword}/{amount}/{orderby}/{order}/{page}',[ProductListController::class, 'show'])->name('.show');
+    Route::get('/export/{keyword}/{amount}/{orderby}/{order}/{page}',[ProductListController::class, 'export'])->name('.export');
 });
 
 Route::prefix('api')->name('api')->middleware('auth')->group(function () {
