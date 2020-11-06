@@ -23,6 +23,9 @@
   <script src="{{asset('storage/third-party/jquery/jquery.min.js')}}"></script>
   <!-- Bootstrap4 Duallistbox -->
   <script src="{{asset('storage/third-party/bootstrap4-duallistbox/jquery.bootstrap-duallistbox.min.js')}}"></script>
+  <!-- Select2 -->
+  <link rel="stylesheet" href="{{asset('storage/third-party/select2/css/select2.min.css')}}">
+  <link rel="stylesheet" href="{{asset('storage/third-party/select2-bootstrap4-theme/select2-bootstrap4.min.css')}}">
 </head>
 <body class="hold-transition sidebar-mini">
 <div class="wrapper">
@@ -57,5 +60,7 @@
 <script src="{{asset('storage/js/adminLTE3.0.5/adminlte.min.js')}}"></script>
 <!-- AdminLTE for demo purposes -->
 <script src="{{asset('storage/js/adminLTE3.0.5/demo.js')}}"></script>
+<!-- Select2 -->
+<script src="{{asset('storage/third-party/select2/js/select2.full.min.js')}}"></script>
 </body>
 </html>

@@ -97,10 +97,11 @@
                   </thead>
                   <tbody>
                       @foreach($data as $list)
+                        @if($list->product_showed != 2)
                           <tr>
                               <td>{{$list->product_title}}</td>
                               <td>{{$list->product_model_name}}</td>
-                              <td>{{$list->product_showed}}</td>
+                              <td>{{$list->product_showed == 1 ? 'Showed' : 'Hide'}}</td>
                           </tr>
                           <div class="modal fade" id="modal-{{$list->product_id}}">
                               <div class="modal-dialog">
@@ -125,6 +126,7 @@
                                   </div>
                               </div>
                           </div>
+                        @endif
                       @endforeach
                   </tbody>
                   <tfoot>

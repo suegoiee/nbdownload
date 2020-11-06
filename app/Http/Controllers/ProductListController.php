@@ -51,7 +51,10 @@ class ProductListController extends Controller
         $export['head'] = ['Title', 'Model Name', 'Status'];
         $export['content'] = array();
         foreach($result['data'] as $td){
-            array_push($export['content'], ['0'=>$td['product_title'], '1'=>$td['product_model_name'], '2'=>$td['product_showed']] );
+            if($td['product_showed'] != 2){
+                $td['product_showed'] == 1 ? $td['product_showed'] = 'Showed' : $td['product_showed'] = 'hide';
+                array_push($export['content'], ['0'=>$td['product_title'], '1'=>$td['product_model_name'], '2'=>$td['product_showed']] );
+            }
         }
         exportCSVAction($export);
     }

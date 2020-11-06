@@ -26,8 +26,9 @@ Route::get('/', function () {
 })->name('home.index');
 
 Route::prefix('onlineHandShake')->name('onlineHandShake')->middleware('auth')->group(function () {
-    Route::post('/confirmDownload',[OnlineHandShakeController::class, 'confirmDownload'])->name('confirmDownload');
-    Route::post('/denyDownload',[OnlineHandShakeController::class, 'denyDownload'])->name('denyDownload');
+    Route::post('/confirmDownload',[OnlineHandShakeController::class, 'confirmDownload'])->name('.confirmDownload');
+    Route::post('/denyDownload',[OnlineHandShakeController::class, 'denyDownload'])->name('.denyDownload');
+    Route::post('/updateOnlineData',[OnlineHandShakeController::class, 'updateOnlineData'])->name('.updateOnlineData');
 });
 
 Route::prefix('downloadListLocal')->name('downloadListLocal')->middleware('auth')->group(function () {

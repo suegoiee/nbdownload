@@ -148,7 +148,7 @@
                               <div class="modal fade" id="modal-{{$download_data->tmp_no}}">
                                   <div class="modal-dialog">
                                       <div class="modal-content">
-                                          <form action="/confirmDownload" method="POST" id="confirmDownload-{{$download_data->tmp_no}}">
+                                          <form action="{{route('onlineHandShake.confirmDownload')}}" method="POST" id="confirmDownload-{{$download_data->tmp_no}}">
                                               @csrf
                                               <div class="modal-header">
                                                   <h4 class="modal-title">Warning</h4>
@@ -157,9 +157,16 @@
                                                   </button>
                                               </div>
                                               <div class="modal-body">
-                                                  <p>File Path : </p>
-                                                  <input class="form-control" type="text" name="file_path">
+                                                  <div class="form-group">
+                                                    <label>File Path : </label>
+                                                    <select name="file_path" class="form-control select2" style="width: 100%;">
+                                                      @foreach($file_path_list as $file)
+                                                        <option value="{{$file['index']}}">{{$file['index']}}</option>
+                                                      @endforeach
+                                                    </select>
+                                                  </div>
                                                   <p>You are about to approve <b>{{$download_data->tmp_title}}</b> to online system.</p><p> Please make sure the data is correct before confirming.</p>
+                                                  <input type="hidden" name="tmp_no" value="{{$download_data->tmp_no}}">
                                                   <input type="hidden" name="download_id" value="{{$download_data->download_id}}">
                                                   <input type="hidden" name="tmp_prd_list_no" value="{{$download_data->tmp_prd_list_no}}">
                                                   <input type="hidden" name="tmp_marketing_name" value="{{$download_data->tmp_marketing_name}}">
@@ -188,8 +195,9 @@
                                                   <input type="hidden" name="tmp_ctime" value="{{$download_data->tmp_ctime}}">
                                               </div>
                                               <div class="modal-footer justify-content-between">
-                                                  <a href="denyDownload/{{$download_data->tmp_no}}"><button type="button" class="btn btn-danger" data-dismiss="modal">Deny</button></a>
-                                                  <a href="confirmDownload/{{$download_data->tmp_no}}"><button type="submit" class="btn btn-primary">Confirm</button></a>
+                                                  <button type="button" class="btn btn-default" data-dismiss="modal">cancel</button>
+                                                  <button type="submit" class="btn btn-danger" name="action" value="deny">Deny</button>
+                                                  <button type="submit" class="btn btn-primary" name="action" value="confirm">Confirm</button>
                                               </div>
                                           </form>
                                       </div>
@@ -249,6 +257,7 @@
               }
             });
           });
+          $('.select2').select2()
         });
       </script>
     </section>
