@@ -40,7 +40,7 @@ class DownloadListOnlineController extends Controller
         return view('online_download_list', compact('data', 'result', 'keyword', 'amount', 'orderby', 'order', 'page', 'type_list'));
     }
 
-    public function export($keyword, $amount, $orderby, $order, $page)
+    public function export(Request $request, $keyword, $amount, $orderby, $order, $page)
     {
         $list = array(
             'search'=>$keyword, 
