@@ -71,6 +71,7 @@
       </div>
     </section>
     <section class="content">
+    <input type="hidden" id="downloadListLocal-api" value="{{route('downloadListLocal.downloadActionByBatch')}}">
       <div class="container-fluid">
         <div class="row">
           <div class="col-12">
@@ -244,7 +245,7 @@
             });
             $.ajax({
               type: "POST",
-              url: '/downloadListLocal/downloadActionByBatch',
+              url: $("#downloadListLocal-api").val(),
               data: {
                 action:$(this).val(),
                 id:id
