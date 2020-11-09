@@ -6,7 +6,7 @@ use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Auth\Access\HandlesAuthorization;
 
-class AdminPolicy
+class PermissionPolicy
 {
     use HandlesAuthorization;
 
@@ -23,5 +23,10 @@ class AdminPolicy
     public function admin(User $user)
     {
         return $user->isAdmin();
+    }
+
+    public function super(User $user)
+    {
+        return $user->isSuper();
     }
 }

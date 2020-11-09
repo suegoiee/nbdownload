@@ -19,6 +19,7 @@ class User extends Authenticatable
     use TwoFactorAuthenticatable;
 
     const USER = 0;
+    const ADMIN = 1;
     /**
      * The attributes that are mass assignable.
      *
@@ -30,6 +31,7 @@ class User extends Authenticatable
         'name',
         'email',
         'password',
+        'permission'
     ];
 
     /**
@@ -65,5 +67,10 @@ class User extends Authenticatable
     public function isAdmin()
     {
       return $this->permission > self::USER;
+    }
+
+    public function isSuper()
+    {
+      return $this->permission > self::ADMIN;
     }
 }

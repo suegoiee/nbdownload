@@ -19,11 +19,6 @@ class ApiController extends Controller
         );
 
         $result = retrieve_data($list, 'POST', 'https://mtc.msi.com/api/v1/nb/get_productlist');
-        // $data= new \stdClass();
-        // foreach ($result['data'] as $key => $value)
-        // {
-        //     $data->$key = (object)$value;
-        // }
         return $result['data'];
     }
     

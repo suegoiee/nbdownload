@@ -4,11 +4,12 @@ use Illuminate\Support\Facades\Route;
 // use App\Http\Middleware\Admin;
 use App\Http\Controllers\ApiController;
 use App\Http\Controllers\SyncController;
-use App\Http\Controllers\DownloadListLocalController;
-use App\Http\Controllers\Auth\LoginController;
+use App\Http\Controllers\UserManageController;
 use App\Http\Controllers\ProductListController;
 use App\Http\Controllers\OnlineHandShakeController;
+use App\Http\Controllers\DownloadListLocalController;
 use App\Http\Controllers\DownloadListOnlineController;
+use App\Http\Controllers\Auth\LoginController;
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -24,6 +25,16 @@ Route::post('login', [LoginController::class, 'authenticate']);
 Route::get('/', function () {
     return redirect()->route('downloadListLocal.show', ['status'=>'NCND', 'keyword'=>'all-data', 'amount' => '15', 'orderby' => 'tmp_title', 'order' => 'ASC']);
 })->name('home.index');
+
+Route::prefix('userManage')->name('userManage')->middleware(['auth', 'super'])->group(function () {
+    Route::get('/{keyword}/{amount}/{orderby}/{order}',[UserManageController::class, 'show'])->name('.show');
+    Route::get('/export/{keyword}/{amount}/{orderby}/{order}',[UserManageController::class, 'export'])->name('.export');
+    Route::post('/changePermission',[UserManageController::class, 'changePermission'])->name('.changePermission');
+});
+
+// Route::namespace('Auth')->middleware(['auth', 'super'])->group(function () {
+//     Route::post('/register','LoginController@process_signup');  
+// });
 
 Route::prefix('onlineHandShake')->name('onlineHandShake')->middleware('auth')->group(function () {
     Route::post('/confirmDownload',[OnlineHandShakeController::class, 'confirmDownload'])->name('.confirmDownload');

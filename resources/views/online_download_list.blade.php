@@ -319,9 +319,9 @@
       </div>
       <script>
         $(".search-product").on('keypress',function(e) {
-      event.preventDefault();
-            var id = $(this).attr('id');
             if(e.which == 13) {
+              event.preventDefault();
+              var id = $(this).attr('id');
               $.ajax({
                 type: "GET",
                 url: '/api/productList/'+$(this).val(),

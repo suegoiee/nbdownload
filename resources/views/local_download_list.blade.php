@@ -127,7 +127,7 @@
                   </thead>
                   <tbody>
                       @foreach($data as $download_data)
-                          <tr class="{{$download_data->tmp_status == 0 ? 'table-danger' : ''}}">
+                          <tr class="{{$download_data->tmp_status == 2 ? 'table-danger' : ''}}">
                               <td>
                                 @if($download_data->tmp_status != 1 && $status != 'all')
                                   <input type="checkbox" class="downloadBatch" name="id[]" value="{{$download_data->tmp_no}}">
@@ -142,7 +142,7 @@
                               <td>{{$download_data->tmp_os}}</td>
                               <td>{{$download_data->tmp_osImage}}</td>
                               <td>{{$download_data->tmp_crc}}</td>
-                              <td><button type="button" class="btn btn-primary" data-toggle="modal" data-target="#modal-{{$download_data->tmp_no}}" {{$download_data->tmp_status == 2 ? '' : 'disabled'}}>Approve</button></td>
+                              <td><button type="button" class="btn btn-primary" data-toggle="modal" data-target="#modal-{{$download_data->tmp_no}}" {{$download_data->tmp_status == 0 ? '' : 'disabled'}}>Approve</button></td>
                           </tr>
                           @if( $download_data->tmp_status != 1 )
                               <div class="modal fade" id="modal-{{$download_data->tmp_no}}">

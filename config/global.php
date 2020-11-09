@@ -44,5 +44,11 @@ return [
         39 => [ 'no' => 40, 'index' => 'dptf', 'subject' => 'dptf' ],
         40 => [ 'no' => 41, 'index' => 'gna', 'subject' => 'gna' ],
         41 => [ 'no' => 42, 'index' => 'hdi', 'subject' => 'hdi' ]
+    ],
+
+    'permission_list' => [
+        0 => 'user',
+        1 => 'admin',
+        2 => 'super'
     ]
 ];

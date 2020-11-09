@@ -13,7 +13,7 @@ class DownloadListLocalController extends Controller
 {    
     public function index(Request $request, $status, $keyword, $amount, $orderby, $order)
     {
-        $data_status = ['NCND' => 2, 'confirmed' => 1, 'denied' => 0];
+        $data_status = ['denied' => 2, 'confirmed' => 1, 'NCND' => 0];
 
         if(isset($request->search)){
             $status = Route::current()->parameter('status');

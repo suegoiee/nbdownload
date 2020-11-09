@@ -10,12 +10,12 @@
     <div class="sidebar">
       <!-- Sidebar user (optional) -->
       <div class="user-panel mt-3 pb-3 mb-3 d-flex">
-        <a href="/user/profile" class="d-block">
+        <a href="{{route('profile.show')}}" class="d-block">
           <div class="image">
             <img src="{{asset('storage/img/notebook-team-logo.png')}}" class="img-circle elevation-2" alt="User Image">
           </div>
           <div class="info">
-            <a href="/user/profile" class="d-block">{{Auth::user()->name}}</a>
+            <a href="{{route('profile.show')}}" class="d-block">{{Auth::user()->name}}</a>
           </div>
         </a>
       </div>
@@ -25,6 +25,16 @@
         <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
           <!-- Add icons to the links using the .nav-icon class
                with font-awesome or any other icon font library -->
+          @can('super')
+            <li class="nav-item @yield('user-management')">
+              <a href="{{route('userManage.show', ['keyword'=>'all-data', 'amount' => '15', 'orderby' => 'id', 'order' => 'DESC', 'page' => 1])}}" class="nav-link @yield('user-management-href')">
+                <i class="nav-icon fas fa-address-card"></i>
+                <p>
+                  Users
+                </p>
+              </a>
+            </li>
+          @endcan
           <li class="nav-item has-treeview @yield('home-menu')">
             <a href="{{route('home.index')}}" class="nav-link @yield('home-href')">
               <i class="nav-icon fas fa-tachometer-alt"></i>
