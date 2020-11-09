@@ -63,7 +63,7 @@ Route::prefix('productList')->name('productList')->middleware(['auth', 'admin'])
 });
 
 Route::prefix('api')->name('api')->middleware('auth')->group(function () {
-    Route::get('/productList/{keyword}',[ApiController::class, 'productList'])->name('.productList');
+    Route::get('/productList',[ApiController::class, 'productList'])->name('.productList');
 });
 
 Route::middleware(['auth:sanctum', 'verified'])->get('/dashboard', function () {

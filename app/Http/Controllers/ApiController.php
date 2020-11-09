@@ -7,10 +7,10 @@ use Illuminate\Support\Facades\Route;
 
 class ApiController extends Controller
 {    
-    public function productList($keyword)
+    public function productList(Request $request)
     {
         $list = array(
-            'search'=>$keyword, 
+            'search'=>$request->keyword, 
             'amount' => 50000, 
             'orderby' => 'product_id', 
             'order' => 'desc',

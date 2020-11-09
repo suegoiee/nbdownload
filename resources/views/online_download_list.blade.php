@@ -59,6 +59,7 @@
       </div>
     </section>
     <section class="content">
+    <input type="hidden" value="{{route('api.productList')}}" id="productList-api">
       <div class="container-fluid">
         <div class="row">
           <div class="col-12">
@@ -324,8 +325,10 @@
               var id = $(this).attr('id');
               $.ajax({
                 type: "GET",
-                url: '/api/productList/'+$(this).val(),
-                data: '',
+                url: $("#productList-api").val(),
+                data:{
+                  keyword : $(this).val()
+                },
                 success:function(msg){
                   $("#product_pool-"+id).empty();
                   msg.forEach(function(value) {
