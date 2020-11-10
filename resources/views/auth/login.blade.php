@@ -32,7 +32,11 @@
   <div class="card">
     <div class="card-body login-card-body">
       <p class="login-box-msg">Sign in to start your session</p>
-
+@if(session()->has('error'))
+    <div class="alert alert-danger">
+        {{ session()->get('error') }}
+    </div>
+@endif
       <form action="{{route('login')}}" method="post">
           @csrf
         <div class="input-group mb-3">

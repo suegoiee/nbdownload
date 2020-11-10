@@ -5,44 +5,44 @@
 @extends('layouts.base')
 
 @section('content')
-<style>
-    .ASC {
-        border: solid red;
-        border-width: 0 4px 4px 0;
-        display: inline-block;
-        padding: 3px;
-        margin-left: 5px;
-        transform: rotate(45deg);
-        -webkit-transform: rotate(45deg);
-    }
-    .DESC {
-        border: solid red;
-        border-width: 0 4px 4px 0;
-        display: inline-block;
-        padding: 3px;
-        margin-left: 5px;
-        transform: rotate(-135deg);
-        -webkit-transform: rotate(-135deg);
-    }
-    .page-title{
-      position: relative; 
-      float: left;
-    }
-    .table-title{
-      position: relative; 
-      float: left;
-      padding-left: 10px;
-    }
-    .table-search{
-      position: relative; 
-      float: right;
-    }
-    .table-control-button{
-      position: relative; 
-      float: left;
-      margin-left: 30px;
-    }
-</style>
+  <style>
+      .ASC {
+          border: solid red;
+          border-width: 0 4px 4px 0;
+          display: inline-block;
+          padding: 3px;
+          margin-left: 5px;
+          transform: rotate(45deg);
+          -webkit-transform: rotate(45deg);
+      }
+      .DESC {
+          border: solid red;
+          border-width: 0 4px 4px 0;
+          display: inline-block;
+          padding: 3px;
+          margin-left: 5px;
+          transform: rotate(-135deg);
+          -webkit-transform: rotate(-135deg);
+      }
+      .page-title{
+        position: relative; 
+        float: left;
+      }
+      .table-title{
+        position: relative; 
+        float: left;
+        padding-left: 10px;
+      }
+      .table-search{
+        position: relative; 
+        float: right;
+      }
+      .table-control-button{
+        position: relative; 
+        float: left;
+        margin-left: 30px;
+      }
+  </style>
     <section class="content-header">
       <div class="container-fluid">
         <div class="row mb-2">
@@ -76,6 +76,7 @@
                             <option value="{{route('userManage.show', ['keyword'=>$keyword, 'amount' => '100', 'orderby' => $orderby, 'order' => $order])}}" {{$amount == 100 ? 'selected' : ''}}>100</option>
                         </select>
                         <p>&nbsp data per page</p>
+                        <a href="{{route('register')}}"><button type="button" class="btn btn-primary table-control-button">Create User</button></a>
                         <a href="{{route('userManage.export', ['keyword'=>$keyword, 'amount' => $amount, 'orderby' => $orderby, 'order' => $order])}}{{ app('request')->input('page') != null ? '?page='.app('request')->input('page') : ''}}"><button type="button" class="btn btn-danger table-control-button">Export CSV</button></a>
                     </div>
                 </form>
@@ -143,13 +144,13 @@
                       @endforeach
                   </tbody>
                   <tfoot>
-                  <tr>
-                    <th><a href="{{route('userManage.show', ['keyword'=>$keyword, 'amount' => $amount, 'orderby' => 'id', 'order' => $order == 'ASC' && $orderby == 'id' ? 'DESC' : 'ASC'])}}">ID<i class="{{$orderby == 'id' ? $order : ''}}"></i></a></th>
-                    <th><a href="{{route('userManage.show', ['keyword'=>$keyword, 'amount' => $amount, 'orderby' => 'name', 'order' => $order == 'ASC' && $orderby == 'name' ? 'DESC' : 'ASC'])}}">Name<i class="{{$orderby == 'name' ? $order : ''}}"></i></a></th>
-                    <th><a href="{{route('userManage.show', ['keyword'=>$keyword, 'amount' => $amount, 'orderby' => 'email', 'order' => $order == 'ASC' && $orderby == 'email' ? 'DESC' : 'ASC'])}}">Email<i class="{{$orderby == 'email' ? $order : ''}}"></i></a></th>
-                    <th><a href="{{route('userManage.show', ['keyword'=>$keyword, 'amount' => $amount, 'orderby' => 'permission', 'order' => $order == 'ASC' && $orderby == 'permission' ? 'DESC' : 'ASC'])}}">Permission<i class="{{$orderby == 'permission' ? $order : ''}}"></i></a></th>
-                    <th>Action</th>
-                  </tr>
+                    <tr>
+                      <th><a href="{{route('userManage.show', ['keyword'=>$keyword, 'amount' => $amount, 'orderby' => 'id', 'order' => $order == 'ASC' && $orderby == 'id' ? 'DESC' : 'ASC'])}}">ID<i class="{{$orderby == 'id' ? $order : ''}}"></i></a></th>
+                      <th><a href="{{route('userManage.show', ['keyword'=>$keyword, 'amount' => $amount, 'orderby' => 'name', 'order' => $order == 'ASC' && $orderby == 'name' ? 'DESC' : 'ASC'])}}">Name<i class="{{$orderby == 'name' ? $order : ''}}"></i></a></th>
+                      <th><a href="{{route('userManage.show', ['keyword'=>$keyword, 'amount' => $amount, 'orderby' => 'email', 'order' => $order == 'ASC' && $orderby == 'email' ? 'DESC' : 'ASC'])}}">Email<i class="{{$orderby == 'email' ? $order : ''}}"></i></a></th>
+                      <th><a href="{{route('userManage.show', ['keyword'=>$keyword, 'amount' => $amount, 'orderby' => 'permission', 'order' => $order == 'ASC' && $orderby == 'permission' ? 'DESC' : 'ASC'])}}">Permission<i class="{{$orderby == 'permission' ? $order : ''}}"></i></a></th>
+                      <th>Action</th>
+                    </tr>
                   </tfoot>
                 </table>
                 {{ $data->links('vendor.pagination.bootstrap-4') }}

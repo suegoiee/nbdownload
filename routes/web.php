@@ -9,7 +9,9 @@ use App\Http\Controllers\ProductListController;
 use App\Http\Controllers\OnlineHandShakeController;
 use App\Http\Controllers\DownloadListLocalController;
 use App\Http\Controllers\DownloadListOnlineController;
+use App\Http\Controllers\Auth\ProfileController;
 use App\Http\Controllers\Auth\LoginController;
+use App\Http\Controllers\Auth\PasswordController;
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -32,9 +34,16 @@ Route::prefix('userManage')->name('userManage')->middleware(['auth', 'super'])->
     Route::post('/changePermission',[UserManageController::class, 'changePermission'])->name('.changePermission');
 });
 
-// Route::namespace('Auth')->middleware(['auth', 'super'])->group(function () {
-//     Route::post('/register','LoginController@process_signup');  
-// });
+Route::prefix('user')->namespace('auth')->middleware(['auth'])->group(function () {
+    Route::get('/profile',[ProfileController::class, 'show'])->name('profile.show');
+    Route::put('/profile-information',[ProfileController::class, 'update'])->name('user-profile-information.update');
+    Route::put('/password',[PasswordController::class, 'update'])->name('user-password.update');
+});
+
+Route::namespace('Auth')->middleware(['auth', 'super'])->group(function () {
+    Route::get('/register','LoginController@show_signup_form')->name('register');
+    Route::post('/register','LoginController@process_signup');  
+});
 
 Route::prefix('onlineHandShake')->name('onlineHandShake')->middleware('auth')->group(function () {
     Route::post('/confirmDownload',[OnlineHandShakeController::class, 'confirmDownload'])->name('.confirmDownload');

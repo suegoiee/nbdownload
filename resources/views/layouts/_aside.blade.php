@@ -1,14 +1,10 @@
-  <!-- Main Sidebar Container -->
   <aside class="main-sidebar sidebar-dark-primary elevation-4">
-    <!-- Brand Logo -->
     <a href="{{route('home.index')}}" class="brand-link">
       <img src="{{asset('storage/img/msi-logo.png')}}" alt="MSI Logo" class="brand-image img-circle elevation-3" style="opacity: 1">
       <span class="brand-text font-weight-light">NB Download System</span>
     </a>
 
-    <!-- Sidebar -->
     <div class="sidebar">
-      <!-- Sidebar user (optional) -->
       <div class="user-panel mt-3 pb-3 mb-3 d-flex">
         <a href="{{route('profile.show')}}" class="d-block">
           <div class="image">
@@ -20,11 +16,8 @@
         </a>
       </div>
 
-      <!-- Sidebar Menu -->
       <nav class="mt-2">
         <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
-          <!-- Add icons to the links using the .nav-icon class
-               with font-awesome or any other icon font library -->
           @can('super')
             <li class="nav-item @yield('user-management')">
               <a href="{{route('userManage.show', ['keyword'=>'all-data', 'amount' => '15', 'orderby' => 'id', 'order' => 'DESC', 'page' => 1])}}" class="nav-link @yield('user-management-href')">
@@ -79,7 +72,5 @@
           </li>
         </ul>
       </nav>
-      <!-- /.sidebar-menu -->
     </div>
-    <!-- /.sidebar -->
   </aside>
