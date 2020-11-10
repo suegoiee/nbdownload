@@ -30,6 +30,6 @@ class PasswordController extends Controller
             'password' => Hash::make($request->password),
         ])->save();
 
-        return redirect()->back();
+        return redirect()->route('profile.show');
     }
 }

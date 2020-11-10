@@ -21,6 +21,6 @@ class ProfileController extends Controller
         $user = User::find(Auth::user()->id);
         $user->name = $request->name;
         $user->save();
-        return view('profile');
+        return redirect()->route('profile.show');
     }
 }

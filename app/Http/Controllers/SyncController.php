@@ -102,6 +102,6 @@ class SyncController extends Controller
             $log->save();
         }
 
-        // dd($cms_download_tmp, $log);
+        echo 'Sync data successfully!';
     }
 }
