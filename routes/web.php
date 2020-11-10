@@ -25,7 +25,7 @@ use App\Http\Controllers\Auth\PasswordController;
 Route::post('login', [LoginController::class, 'authenticate']);
 
 Route::get('/', function () {
-    return redirect()->route('downloadListLocal.show', ['status'=>'NCND', 'keyword'=>'all-data', 'amount' => '15', 'orderby' => 'tmp_title', 'order' => 'ASC']);
+    return redirect()->route('downloadListLocal.show', ['status'=>'NCND', 'keyword'=>'all-data', 'amount' => '15', 'orderby' => 'tmp_no', 'order' => 'DESC']);
 })->name('home.index');
 
 Route::prefix('userManage')->name('userManage')->middleware(['auth', 'super'])->group(function () {

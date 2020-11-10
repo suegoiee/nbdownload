@@ -55,7 +55,7 @@ class SyncController extends Controller
                         strpos( $software_record->version, 'IMS') === false ? $status = 2 : $status = 0;
                         
                         
-                        $cms_download_tmp = CmsDownloadTmp::firstOrCreate([
+                        $cms_download_tmp = CmsDownloadTmp::create([
                             'tmp_marketing_name' => $model_marketing_recoeds[$i]->marketing,
                             'tmp_prd_model_name' => $model_marketing_recoeds[$i]->model,
                             'tmp_title' => $software_record->title,

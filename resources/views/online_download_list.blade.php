@@ -94,6 +94,7 @@
                 <table class="table table-bordered table-striped">
                   <thead>
                   <tr>
+                    <th><a href="{{route('downloadListOnline.show', ['keyword'=>$keyword, 'amount' => $amount, 'orderby' => 'download_id', 'order' => $order == 'ASC' && $orderby == 'download_id' ? 'DESC' : 'ASC', 'page' => $page])}}">ID<i class="{{$orderby == 'download_id' ? $order : ''}}"></i></a></th>
                     <th><a href="{{route('downloadListOnline.show', ['keyword'=>$keyword, 'amount' => $amount, 'orderby' => 'download_title', 'order' => $order == 'ASC' && $orderby == 'download_title' ? 'DESC' : 'ASC', 'page' => $page])}}">Title<i class="{{$orderby == 'download_title' ? $order : ''}}"></i></a></th>
                     <th><a href="{{route('downloadListOnline.show', ['keyword'=>$keyword, 'amount' => $amount, 'orderby' => 'download_file', 'order' => $order == 'ASC' && $orderby == 'download_file' ? 'DESC' : 'ASC', 'page' => $page])}}">File<i class="{{$orderby == 'download_file' ? $order : ''}}"></i></a></th>
                     <th><a href="{{route('downloadListOnline.show', ['keyword'=>$keyword, 'amount' => $amount, 'orderby' => 'download_size', 'order' => $order == 'ASC' && $orderby == 'download_size' ? 'DESC' : 'ASC', 'page' => $page])}}">Size<i class="{{$orderby == 'download_size' ? $order : ''}}"></i></a></th>
@@ -110,6 +111,7 @@
                     <input type="hidden" id="csrf" value="{{csrf_token()}}">
                       @foreach($data as $list)
                           <tr>
+                              <td>{{$list->download_id}}</td>
                               <td>{{$list->download_title}}</td>
                               <td>{{$list->download_file}}</td>
                               <td>{{$list->download_size}}</td>
@@ -247,6 +249,7 @@
                   </tbody>
                   <tfoot>
                   <tr>
+                    <th><a href="{{route('downloadListOnline.show', ['keyword'=>$keyword, 'amount' => $amount, 'orderby' => 'download_id', 'order' => $order == 'ASC' && $orderby == 'download_id' ? 'DESC' : 'ASC', 'page' => $page])}}">ID<i class="{{$orderby == 'download_id' ? $order : ''}}"></i></a></th>
                     <th><a href="{{route('downloadListOnline.show', ['keyword'=>$keyword, 'amount' => $amount, 'orderby' => 'download_title', 'order' => $order == 'ASC' && $orderby == 'download_title' ? 'DESC' : 'ASC', 'page' => $page])}}">Title<i class="{{$orderby == 'download_title' ? $order : ''}}"></i></a></th>
                     <th><a href="{{route('downloadListOnline.show', ['keyword'=>$keyword, 'amount' => $amount, 'orderby' => 'download_file', 'order' => $order == 'ASC' && $orderby == 'download_file' ? 'DESC' : 'ASC', 'page' => $page])}}">File<i class="{{$orderby == 'download_file' ? $order : ''}}"></i></a></th>
                     <th><a href="{{route('downloadListOnline.show', ['keyword'=>$keyword, 'amount' => $amount, 'orderby' => 'download_size', 'order' => $order == 'ASC' && $orderby == 'download_size' ? 'DESC' : 'ASC', 'page' => $page])}}">Size<i class="{{$orderby == 'download_size' ? $order : ''}}"></i></a></th>

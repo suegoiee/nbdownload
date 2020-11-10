@@ -114,6 +114,7 @@
                   <thead>
                   <tr>
                     <th>Select</th>
+                    <th><a href="{{route('downloadListLocal.show', ['status'=>$status, 'keyword'=>$keyword, 'amount' => $amount, 'orderby' => 'tmp_no', 'order' => $order == 'ASC' && $orderby == 'tmp_no' ? 'DESC' : 'ASC'])}}">ID<i class="{{$orderby == 'tmp_no' ? $order : ''}}"></i></a></th>
                     <th><a href="{{route('downloadListLocal.show', ['status'=>$status, 'keyword'=>$keyword, 'amount' => $amount, 'orderby' => 'tmp_title', 'order' => $order == 'ASC' && $orderby == 'tmp_title' ? 'DESC' : 'ASC'])}}">Title<i class="{{$orderby == 'tmp_title' ? $order : ''}}"></i></a></th>
                     <th><a href="{{route('downloadListLocal.show', ['status'=>$status, 'keyword'=>$keyword, 'amount' => $amount, 'orderby' => 'tmp_marketing_name', 'order' => $order == 'ASC' && $orderby == 'tmp_marketing_name' ? 'DESC' : 'ASC'])}}">Marketing Name<i class="{{$orderby == 'tmp_marketing_name' ? $order : ''}}"></i></a></th>
                     <th><a href="{{route('downloadListLocal.show', ['status'=>$status, 'keyword'=>$keyword, 'amount' => $amount, 'orderby' => 'tmp_prd_model_name', 'order' => $order == 'ASC' && $orderby == 'tmp_prd_model_name' ? 'DESC' : 'ASC'])}}">Model Name<i class="{{$orderby == 'tmp_prd_model_name' ? $order : ''}}"></i></a></th>
@@ -134,6 +135,7 @@
                                   <input type="checkbox" class="downloadBatch" name="id[]" value="{{$download_data->tmp_no}}">
                                 @endif
                               </td>
+                              <td>{{$download_data->tmp_no}}</td>
                               <td>{{$download_data->tmp_title}}</td>
                               <td>{{$download_data->tmp_marketing_name}}</td>
                               <td>{{$download_data->tmp_prd_model_name}}</td>
@@ -210,6 +212,7 @@
                   <tfoot>
                   <tr>
                     <th>Select</th>
+                    <th><a href="{{route('downloadListLocal.show', ['status'=>$status, 'keyword'=>$keyword, 'amount' => $amount, 'orderby' => 'tmp_no', 'order' => $order == 'ASC' && $orderby == 'tmp_no' ? 'DESC' : 'ASC'])}}">ID<i class="{{$orderby == 'tmp_no' ? $order : ''}}"></i></a></th>
                     <th><a href="{{route('downloadListLocal.show', ['status'=>$status, 'keyword'=>$keyword, 'amount' => $amount, 'orderby' => 'tmp_title', 'order' => $order == 'ASC' && $orderby == 'tmp_title' ? 'DESC' : 'ASC'])}}">Title<i class="{{$orderby == 'tmp_title' ? $order : ''}}"></i></a></th>
                     <th><a href="{{route('downloadListLocal.show', ['status'=>$status, 'keyword'=>$keyword, 'amount' => $amount, 'orderby' => 'tmp_marketing_name', 'order' => $order == 'ASC' && $orderby == 'tmp_marketing_name' ? 'DESC' : 'ASC'])}}">Marketing Name<i class="{{$orderby == 'tmp_marketing_name' ? $order : ''}}"></i></a></th>
                     <th><a href="{{route('downloadListLocal.show', ['status'=>$status, 'keyword'=>$keyword, 'amount' => $amount, 'orderby' => 'tmp_prd_model_name', 'order' => $order == 'ASC' && $orderby == 'tmp_prd_model_name' ? 'DESC' : 'ASC'])}}">Model Name<i class="{{$orderby == 'tmp_prd_model_name' ? $order : ''}}"></i></a></th>
