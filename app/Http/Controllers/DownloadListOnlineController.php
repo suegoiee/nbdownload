@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use Auth;
+use App\Jobs\CreateLog;
 use App\Models\cms\CmsLog;
 use App\Models\cms\CmsDownloadTmp;
 use App\Models\cms\CmsDownloadType;
@@ -68,17 +69,12 @@ class DownloadListOnlineController extends Controller
             }
             array_push($export['content'], ['0'=>$td['download_title'], '1'=>$td['download_deviceid'], '2'=>$td['download_file'], '3'=>$td['download_size'], '4'=>$td['download_version'], '5'=>$td['download_packageversion'], '6'=>$td['download_crc'], '7'=>$td['os'], '8'=>$td['download_showed'], '9'=>$td['download_release']] );
         }
-        $log = new CmsLog;
-        $log->setTable('cms_log_' . date("Ym"));
+        
+        $log= new \stdClass();
         $log->log_table = 'cms_download_tmp';
-        $log->log_column = 'all';
-        $log->log_status = 0;
-        $log->log_action = 'export online data';
+        $log->log_action = 'change '.$download->title.' status to '.$status;
         $log->log_ip = $request->ip();
-        $log->log_user_id = Auth::user()->id;
-        $log->log_table_id = 0;
-        $log->save();
-        //dd($export);
+        $this->dispatchNow(CreateLog::fromRequest($log));
         exportCSVAction($export);
     }
     

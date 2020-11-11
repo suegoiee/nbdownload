@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use DB;
 use Auth;
+use App\Jobs\CreateLog;
 use App\Models\cms\CmsLog;
 use App\Models\cms\CmsDownloadTmp;
 use Illuminate\Http\Request;
@@ -73,16 +74,12 @@ class DownloadListLocalController extends Controller
         foreach($data as $td){
             array_push($export['content'], ['0'=>$td->tmp_title, '1'=>$td->tmp_marketing_name, '2'=>$td->tmp_prd_model_name, '3'=>$td->tmp_device, '4'=>$td->tmp_version, '5'=>$td->tmp_packageVersion, '6'=>$td->tmp_os, '7'=>$td->tmp_osImage, '8'=>$td->tmp_crc] );
         }
-        $log = new CmsLog;
-        $log->setTable('cms_log_' . date("Ym"));
+
+        $log= new \stdClass();
         $log->log_table = 'cms_download_tmp';
-        $log->log_column = 'all';
-        $log->log_status = 0;
-        $log->log_action = 'export online local';
+        $log->log_action = 'export local download data';
         $log->log_ip = $request->ip();
-        $log->log_user_id = Auth::user()->id;
-        $log->log_table_id = 0;
-        $log->save();
+        $thread = $this->dispatchNow(CreateLog::fromRequest($log));
         exportCSVAction($export);
     }
 
@@ -93,16 +90,12 @@ class DownloadListLocalController extends Controller
             $download = CmsDownloadTmp::where('tmp_no', $id)->first();
             $download->tmp_status = $status;
             $download->save();
-            $log = new CmsLog;
-            $log->setTable('cms_log_' . date("Ym"));
+
+            $log= new \stdClass();
             $log->log_table = 'cms_download_tmp';
-            $log->log_column = 'all';
-            $log->log_status = 0;
             $log->log_action = 'change '.$download->title.' status to '.$status;
             $log->log_ip = $request->ip();
-            $log->log_user_id = Auth::user()->id;
-            $log->log_table_id = 0;
-            $log->save();
+            $this->dispatchNow(CreateLog::fromRequest($log));
         }
         return print_r($request->all());
     }
