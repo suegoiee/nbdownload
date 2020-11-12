@@ -14,7 +14,7 @@ class DownloadListLocalController extends Controller
 {    
     public function index(Request $request, $status, $keyword, $amount, $orderby, $order)
     {
-        $data_status = ['denied' => 2, 'confirmed' => 1, 'NCND' => 0];
+        $data_status = ['Reject' => 2, 'Approve' => 1, 'Draft' => 0];
 
         if(isset($request->search)){
             $status = Route::current()->parameter('status');
@@ -41,14 +41,14 @@ class DownloadListLocalController extends Controller
                         ->orWhere('tmp_osImage', 'LIKE', "%$keyword%");
                     });
         }
-        // dd($data = $data->orderby($orderby, $order)->first());
         $data = $data->orderby($orderby, $order)->paginate($amount);
+        // dd($data);
         return view('local_download_list', compact('data', 'status', 'keyword', 'amount', 'orderby', 'order', 'file_path_list'));
     }
 
     public function export(Request $request, $status, $keyword, $amount, $orderby, $order)
     {
-        $data_status = ['NCND' => 2, 'confirmed' => 1, 'denied' => 0];
+        $data_status = ['Reject' => 2, 'Approve' => 1, 'Draft' => 0];
 
         $data = new CmsDownloadTmp;
         if(isset($data_status[$status])){
@@ -79,24 +79,24 @@ class DownloadListLocalController extends Controller
         $log->log_table = 'cms_download_tmp';
         $log->log_action = 'export local download data';
         $log->log_ip = $request->ip();
-        $thread = $this->dispatchNow(CreateLog::fromRequest($log));
+        $this->dispatchNow(CreateLog::fromRequest($log));
         exportCSVAction($export);
     }
 
     public function downloadActionByBatch(Request $request)
     {
-        $request->action == 'deny' ? $status = 0: $status = 2;
+        $request->action == 'Reject' ? $status = 2: $status = 0;
         foreach($request->id as $id){
             $download = CmsDownloadTmp::where('tmp_no', $id)->first();
             $download->tmp_status = $status;
             $download->save();
-
+            
             $log= new \stdClass();
             $log->log_table = 'cms_download_tmp';
-            $log->log_action = 'change '.$download->title.' status to '.$status;
+            $log->log_action = $request->action.' '.$download->tmp_no.'. By batch';
             $log->log_ip = $request->ip();
             $this->dispatchNow(CreateLog::fromRequest($log));
         }
-        return print_r($request->all());
+        return print_r($status);
     }
 }

@@ -72,7 +72,7 @@ class DownloadListOnlineController extends Controller
         
         $log= new \stdClass();
         $log->log_table = 'cms_download_tmp';
-        $log->log_action = 'change '.$download->title.' status to '.$status;
+        $log->log_action = 'export online download list';
         $log->log_ip = $request->ip();
         $this->dispatchNow(CreateLog::fromRequest($log));
         exportCSVAction($export);

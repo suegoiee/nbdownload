@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use DB;
 use Auth;
+use App\Jobs\CreateLog;
 use App\Models\cms\CmsLog;
 use App\Models\cms\CmsDownloadTmp;
 use App\Models\cms\CmsDownloadType;
@@ -14,7 +15,7 @@ class OnlineHandShakeController extends Controller
 {    
     public function confirmDownload(Request $request)
     {
-        if($request->action == 'confirm'){
+        if($request->action == 'Approve'){
             if ( empty( $request->tmp_crc ) ) {
                 return redirect()->back();
             }
@@ -145,22 +146,23 @@ class OnlineHandShakeController extends Controller
             $context  = stream_context_create($opts);
             $result = file_get_contents('https://mtc.msi.com/api/v1/nb/add_download', false, $context);
             // dd($postdata);
-            $log = new CmsLog;
-            $log->setTable('cms_log_' . date("Ym"));
+            $log= new \stdClass();
             $log->log_table = 'cms_download_tmp';
-            $log->log_column = 'all';
-            $log->log_status = 0;
-            $log->log_action = 'approve data to online';
+            $log->log_action = 'Approve '.$request->tmp_no.' data to online. By hand';
             $log->log_ip = $request->ip();
-            $log->log_user_id = Auth::user()->id;
-            $log->log_table_id = 0;
-            $log->save();
+            $this->dispatchNow(CreateLog::fromRequest($log));
             return redirect()->back();
         }
-        elseif($request->action == 'deny'){
+        elseif($request->action == 'Reject'){
             $data = CmsDownloadTmp::where('tmp_no', $request->tmp_no)->first();
-            $data->tmp_status = 0;
+            $data->tmp_status = 2;
             $data->save();
+
+            $log= new \stdClass();
+            $log->log_table = 'cms_download_tmp';
+            $log->log_action = 'Reject '.$request->tmp_no.'. By hand';
+            $log->log_ip = $request->ip();
+            $this->dispatchNow(CreateLog::fromRequest($log));
             return redirect()->back();
         }
     }
@@ -187,16 +189,11 @@ class OnlineHandShakeController extends Controller
         //dd($postdata, $request->all());
         $context  = stream_context_create($opts);
         $result = file_get_contents('https://mtc.msi.com//api/v1/nb/add_relationships', false, $context);
-        $log = new CmsLog;
-        $log->setTable('cms_log_' . date("Ym"));
+        $log= new \stdClass();
         $log->log_table = 'cms_download_tmp';
-        $log->log_column = 'all';
-        $log->log_status = 0;
-        $log->log_action = 'update online data and relation';
+        $log->log_action = 'update '.$request['download_id'].' online data and relation';
         $log->log_ip = $request->ip();
-        $log->log_user_id = Auth::user()->id;
-        $log->log_table_id = 0;
-        $log->save();
+        $this->dispatchNow(CreateLog::fromRequest($log));
         return redirect()->back();
     }
     

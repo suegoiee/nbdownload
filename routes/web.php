@@ -25,7 +25,7 @@ use App\Http\Controllers\Auth\PasswordController;
 Route::post('login', [LoginController::class, 'authenticate']);
 
 Route::get('/', function () {
-    return redirect()->route('downloadListLocal.show', ['status'=>'NCND', 'keyword'=>'all-data', 'amount' => '15', 'orderby' => 'tmp_no', 'order' => 'DESC']);
+    return redirect()->route('downloadListLocal.show', ['status'=>'Draft', 'keyword'=>'all-data', 'amount' => '15', 'orderby' => 'tmp_ctime', 'order' => 'DESC']);
 })->name('home.index');
 
 Route::prefix('userManage')->name('userManage')->middleware(['auth', 'super'])->group(function () {
@@ -47,7 +47,7 @@ Route::namespace('Auth')->middleware(['auth', 'super'])->group(function () {
 
 Route::prefix('onlineHandShake')->name('onlineHandShake')->middleware('auth')->group(function () {
     Route::post('/confirmDownload',[OnlineHandShakeController::class, 'confirmDownload'])->name('.confirmDownload');
-    Route::post('/denyDownload',[OnlineHandShakeController::class, 'denyDownload'])->name('.denyDownload');
+    Route::post('/RejectDownload',[OnlineHandShakeController::class, 'RejectDownload'])->name('.RejectDownload');
     Route::post('/updateOnlineData',[OnlineHandShakeController::class, 'updateOnlineData'])->name('.updateOnlineData');
 });
 

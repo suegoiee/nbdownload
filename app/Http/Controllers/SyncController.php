@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Jobs\CreateLog;
 use App\Models\cms\CmsLog;
 use App\Models\cms\CmsDownloadTmp;
 use Illuminate\Http\Request;
@@ -90,16 +91,11 @@ class SyncController extends Controller
             }
             $end_time = time()-$time_start;
             $count = $i+1;
-            $log = new CmsLog;
-            $log->setTable('cms_log_' . date("Ym"));
+            $log= new \stdClass();
             $log->log_table = 'cms_download_tmp';
-            $log->log_column = 'all';
-            $log->log_status = 0;
             $log->log_action = 'sync '.$count.'th time of '.count($model_marketing_recoeds). ' recoeds. '.$end_time.' seconds used';
             $log->log_ip = $request->ip();
-            $log->log_user_id = 20201029;
-            $log->log_table_id = 0;
-            $log->save();
+            $this->dispatchNow(CreateLog::fromRequest($log));
         }
 
         echo 'Sync data successfully!';

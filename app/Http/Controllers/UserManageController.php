@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use DB;
 use Auth;
 use App\Models\User;
+use App\Jobs\CreateLog;
 use App\Models\cms\CmsLog;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
@@ -36,16 +37,11 @@ class UserManageController extends Controller
         $user->permission = $request->permission;
         $user->save();
 
-        $log = new CmsLog;
-        $log->setTable('cms_log_' . date("Ym"));
+        $log= new \stdClass();
         $log->log_table = 'users';
-        $log->log_column = 'all';
-        $log->log_status = 0;
         $log->log_action = 'change '.$user->name.' permission to '.config('global.permission_list')[$request->permission];
         $log->log_ip = $request->ip();
-        $log->log_user_id = Auth::user()->id;
-        $log->log_table_id = 0;
-        $log->save();
+        $this->dispatchNow(CreateLog::fromRequest($log));
 
         return redirect()->back();
     }
@@ -66,16 +62,12 @@ class UserManageController extends Controller
         foreach($data as $td){
             array_push($export['content'], ['0'=>$td->id, '1'=>$td->name, '2'=>$td->email, '3'=>config('global.permission_list')[$td->permission]] );
         }
-        $log = new CmsLog;
-        $log->setTable('cms_log_' . date("Ym"));
+
+        $log= new \stdClass();
         $log->log_table = 'users';
-        $log->log_column = 'all';
-        $log->log_status = 0;
         $log->log_action = 'export user table';
         $log->log_ip = $request->ip();
-        $log->log_user_id = Auth::user()->id;
-        $log->log_table_id = 0;
-        $log->save();
+        $this->dispatchNow(CreateLog::fromRequest($log));
         exportCSVAction($export);
     }
 }
