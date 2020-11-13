@@ -149,6 +149,7 @@
                                                 <div class="modal-body">
                                                     <div class="row model-group">
                                                         <div class="col-sm-10">
+                                                            <input name="action" type="hidden" value="update">
                                                             <input name="download_id" class="form-control" type="hidden" value="{{$list->download_id}}">
                                                             Title<input name="download_title" class="form-control" type="text" value="{{$list->download_title}}">
                                                             File Path<input name="download_file" class="form-control" type="text" value="{{$list->download_file}}">

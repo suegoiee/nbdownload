@@ -185,9 +185,13 @@ class OnlineHandShakeController extends Controller
                 'download_size' => $file_size
             );
             $result = retrieve_by_curl($list, 'POST', 'https://internal-cms.msi.com.tw/api/v1/nb/add_download');
+            
+            $download = CmsDownloadTmp::where('tmp_no', $request->tmp_no)->first();
+            $download->tmp_status = $status;
+            $download->save();
 
             $log= new \stdClass();
-            $log->log_action = 'Approve '.$request->tmp_no.' data to online. By hand';
+            $log->log_action = 'Approve '.$request->tmp_no.' data to online. By hand. Result: '.$result;
             $log->log_ip = $request->ip();
             $this->dispatchNow(CreateLog::fromRequest($log));
             return redirect()->back();
