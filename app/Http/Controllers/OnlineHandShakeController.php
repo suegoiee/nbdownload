@@ -153,7 +153,7 @@ class OnlineHandShakeController extends Controller
 
 
 
-
+            isset($file_size) ? $file_size = $file_size : $file_size = 0;
             $list = array(
                 'API_KEY' => env('API_KEY'),
                 'tmp_no' => $request->tmp_no,
