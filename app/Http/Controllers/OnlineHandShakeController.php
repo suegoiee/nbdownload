@@ -144,7 +144,7 @@ class OnlineHandShakeController extends Controller
             );
             
             $context  = stream_context_create($opts);
-            $result = file_get_contents('https://mtc.msi.com/api/v1/nb/add_download', false, $context);
+            $result = file_get_contents('https://internal-cms.msi.com.tw/api/v1/nb/add_download', false, $context);
             // dd($postdata);
             $log= new \stdClass();
             $log->log_table = 'cms_download_tmp';
@@ -188,7 +188,7 @@ class OnlineHandShakeController extends Controller
         
         //dd($postdata, $request->all());
         $context  = stream_context_create($opts);
-        $result = file_get_contents('https://mtc.msi.com//api/v1/nb/add_relationships', false, $context);
+        $result = file_get_contents('https://internal-cms.msi.com.tw//api/v1/nb/add_relationships', false, $context);
         $log= new \stdClass();
         $log->log_table = 'cms_download_tmp';
         $log->log_action = 'update '.$request['download_id'].' online data and relation';
