@@ -76,7 +76,6 @@ class DownloadListLocalController extends Controller
         }
 
         $log= new \stdClass();
-        $log->log_table = 'NB_download';
         $log->log_action = 'export local download data';
         $log->log_ip = $request->ip();
         $this->dispatchNow(CreateLog::fromRequest($log));
@@ -92,7 +91,6 @@ class DownloadListLocalController extends Controller
             $download->save();
             
             $log= new \stdClass();
-            $log->log_table = 'NB_download';
             $log->log_action = $request->action.' '.$download->tmp_no.'. By batch';
             $log->log_ip = $request->ip();
             $this->dispatchNow(CreateLog::fromRequest($log));

@@ -38,7 +38,6 @@ class UserManageController extends Controller
         $user->save();
 
         $log= new \stdClass();
-        $log->log_table = 'NB_download';
         $log->log_action = 'change '.$user->name.' permission to '.config('global.permission_list')[$request->permission];
         $log->log_ip = $request->ip();
         $this->dispatchNow(CreateLog::fromRequest($log));
@@ -64,7 +63,6 @@ class UserManageController extends Controller
         }
 
         $log= new \stdClass();
-        $log->log_table = 'NB_download';
         $log->log_action = 'export user table';
         $log->log_ip = $request->ip();
         $this->dispatchNow(CreateLog::fromRequest($log));

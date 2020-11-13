@@ -34,77 +34,121 @@ class OnlineHandShakeController extends Controller
             $file_base_name = basename( $file_name, "." . $file_extension );
             $file_rename = ( ( $request->tmp_file_category ) ? ( $request->tmp_file_category . '_' ) : '' ) . $file_base_name . '_' . $request->tmp_version. '_' . $request->tmp_crc . '.' . $file_extension;
             if ( !empty( $request->tmp_file_category ) ) $file_rename = $request->tmp_device . '_' . $file_rename;
-
             $path = ( $request->tmp_source == 'MSI') ? '/mnt/rdfile' : '/mnt/rdfilek';
+
+            
+            $log= new \stdClass();
+            $log->log_ip = $request->ip();
 
             switch ( $request->tmp_category )
             {
                 case 'Driver':
                 case 'Driver and Application':
-                    if ( empty( $request->tmp_file_category ) ) return [ 'status' => 'error', 'message' => 'File folder is empty.' ];
-                    if ( empty( $request->tmp_guid ) ) return [ 'status' => 'error', 'message' => 'Guid is empty.' ];
-                    if ( empty( $request->tmp_upgradeguid ) ) return [ 'status' => 'error', 'message' => 'Upgrade Guid is empty.' ];
-                    if ( empty( $request->tmp_silentInstantparameter ) ) return [ 'status' => 'error', 'message' => 'Silent Install Parameter is empty.' ];
+                    if ( empty( $request->tmp_file_category ) ) {
+                        $log->log_action = 'Driver/Application: '.$request->tmp_no.' folder is empty, tmp_file_category null';
+                        $this->dispatchNow(CreateLog::fromRequest($log));
+                        return [ 'status' => 'error', 'message' => 'File folder is empty.' ];
+                    }
+                    if ( empty( $request->tmp_guid ) ) {
+                        $log->log_action = 'Driver/Application: '.$request->tmp_no.' tmp_guid null';
+                        $this->dispatchNow(CreateLog::fromRequest($log));
+                        return [ 'status' => 'error', 'message' => 'Guid is empty.' ];
+                    }
+                    if ( empty( $request->tmp_upgradeguid ) ) {
+                        $log->log_action = 'Driver/Application: '.$request->tmp_no.' tmp_upgradeguid null';
+                        $this->dispatchNow(CreateLog::fromRequest($log));
+                        return [ 'status' => 'error', 'message' => 'Upgrade Guid is empty.' ];
+                    }
+                    if ( empty( $request->tmp_silentInstantparameter ) ) {
+                        $log->log_action = 'Driver/Application: '.$request->tmp_no.' tmp_silentInstantparameter null';
+                        $this->dispatchNow(CreateLog::fromRequest($log));
+                        return [ 'status' => 'error', 'message' => 'Silent Install Parameter is empty.' ];
+                    }
                     if(strpos($request->tmp_file_name,'www.microsoft.com') !== FALSE){
                         $file_path_name = $request->tmp_file_name;
                     }
                     else{
                         $file_path_name = $request->tmp_file_category . '/' . $file_rename;
                         $file_path = '/downloads/nb_drivers/' . $file_path_name;
-                        if ( is_file( $file_path ) ) return [ 'status' => 'error', 'message' => 'Server already have a same file, please reject this sync data!'];
-
+                        if ( is_file( $file_path ) ) {
+                            $log->log_action = 'Driver/Application: '.$request->tmp_no.' Server already have a same file in '.$file_path;
+                            $this->dispatchNow(CreateLog::fromRequest($log));
+                            return [ 'status' => 'error', 'message' => 'Server already have a same file, please reject this sync data!'];
+                        }
                         $copy_path = $path . $request->tmp_file_name;
                         $file_size = ( file_exists( $copy_path ) ) ? filesize( $copy_path ) : 0;
-                        if ( $file_size == 0 ) return [ 'status' => 'error', 'message' => 'File size is null!<br>' . $copy_path ];
+                        if ( $file_size == 0 ) {
+                            $log->log_action = 'Driver/Application: '.$request->tmp_no.' File size is null in '.$copy_path;
+                            $this->dispatchNow(CreateLog::fromRequest($log));
+                            return [ 'status' => 'error', 'message' => 'File size is null!<br>' . $copy_path ];
+                        }
                         copy( $copy_path, $file_path );
-                        $action = 'Driver/Driver and Application copy from '.$copy_path. ' to '.$file_path.'.';
+                        $action = 'Driver/Application: '.$request->tmp_no.' copy from '.$copy_path. ' to '.$file_path.'.';
                     }
                     break;
                 case 'Application':
-                    if ( empty( $request->tmp_guid ) ) return [ 'status' => 'error', 'message' => 'Guid is empty.' ];
-                    if ( empty( $request->tmp_upgradeguid ) ) return [ 'status' => 'error', 'message' => 'Upgrade Guid is empty.' ];
-                    if ( empty( $request->tmp_silentInstantparameter ) ) return [ 'status' => 'error', 'message' => 'Silent Install Parameter is empty.' ];
-
+                    if ( empty( $request->tmp_guid ) ) {
+                        $log->log_action = 'Application: '.$request->tmp_no.' tmp_guid null';
+                        $this->dispatchNow(CreateLog::fromRequest($log));
+                        return [ 'status' => 'error', 'message' => 'Guid is empty.' ];
+                    }
+                    if ( empty( $request->tmp_upgradeguid ) ) {
+                        $log->log_action = 'Application: '.$request->tmp_no.' tmp_upgradeguid null';
+                        $this->dispatchNow(CreateLog::fromRequest($log));
+                        return [ 'status' => 'error', 'message' => 'Upgrade Guid is empty.' ];
+                    }
+                    if ( empty( $request->tmp_silentInstantparameter ) ) {
+                        $log->log_action = 'Application: '.$request->tmp_no.' tmp_silentInstantparameter null';
+                        $this->dispatchNow(CreateLog::fromRequest($log));
+                        return [ 'status' => 'error', 'message' => 'Silent Install Parameter is empty.' ];
+                    }
                     if(strpos($request->tmp_file_name,'www.microsoft.com') !== FALSE){
                         $file_path_name = $request->tmp_file_name;
                     }
                     else{
                         $file_path_name = 'nb/' . $file_rename;
                         $file_path = '/downloads/uti_exe/' . $file_path_name;
-                        if ( is_file( $file_path ) ) return [ 'status' => 'error', 'message' => 'Server already have a same file, please reject this sync data!' ];
-
+                        if ( is_file( $file_path ) ) {
+                            $log->log_action = 'Application: '.$request->tmp_no.' Server already have a same file in '.$file_path;
+                            $this->dispatchNow(CreateLog::fromRequest($log));
+                            return [ 'status' => 'error', 'message' => 'Server already have a same file, please reject this sync data!' ];
+                        }
                         $file_size = 0;
                         $copy_path = $path . $request->tmp_file_name;
                         $file_size = ( file_exists( $copy_path ) ) ? filesize( $copy_path ) : 0;
-                        if ( $file_size == 0 ) return [ 'status' => 'error', 'message' => 'File size is null!<br>' . $copy_path ];
-
+                        if ( $file_size == 0 ) {
+                            $log->log_action = 'Application: '.$request->tmp_no.' File size is null in '.$copy_path;
+                            $this->dispatchNow(CreateLog::fromRequest($log));
+                            return [ 'status' => 'error', 'message' => 'File size is null!<br>' . $copy_path ];
+                        }
                         copy( $copy_path, $file_path );
-                        $action = 'Application copy from '.$copy_path. ' to '.$file_path.'.';
+                        $action = 'Application: '.$request->tmp_no.' copy from '.$copy_path. ' to '.$file_path.'.';
                     }
                     break;
                 case 'BIOS':
                     $file_path_name = 'nb/' . $file_rename;
                     $file_size = ( file_exists( '/downloads/bos_exe/' . $file_path_name ) ) ? filesize( '/downloads/bos_exe/' . $file_path_name ) : 0;
                     if ( $file_size == 0 ) {
+                        $log->log_action = 'BIOS: '.$request->tmp_no.' File size is null in '.'/downloads/bos_exe/' . $file_path_name;
+                        $this->dispatchNow(CreateLog::fromRequest($log));
                         return [ 'status' => 'error', 'message' => 'File size is null!' ];
                     }
-                    $action = 'BIOS '.$file_path_name;
+                    $action = 'BIOS: '.$request->tmp_no.' has found in '.'/downloads/bos_exe/' . $file_path_name;
                 break;
                 case 'EC':
                 case 'VBIOS':
                     $file_path_name = 'nb/' . $file_rename;
                     $file_size = ( file_exists( '/downloads/archive/frm_exe/' . $file_path_name ) ) ? filesize( '/downloads/archive/frm_exe/' . $file_path_name ) : 0;
                     if ( $file_size == 0 ){ 
+                        $log->log_action = 'EC/VBIOS: '.$request->tmp_no.' File size is null in '.'/downloads/archive/frm_exe/' . $file_path_name;
+                        $this->dispatchNow(CreateLog::fromRequest($log));
                         return [ 'status' => 'error', 'message' => 'File size is null!' ];
                     }
-                    $action = 'EC/VBIOS '.$file_path_name;
+                    $action = 'EC/VBIOS '.$request->tmp_no.' has found in '.'/downloads/archive/frm_exe/' . $file_path_name;
                     break;
             }
 
-            $log= new \stdClass();
-            $log->log_table = 'NB_download';
             $log->log_action = $action;
-            $log->log_ip = $request->ip();
             $this->dispatchNow(CreateLog::fromRequest($log));
 
 
@@ -159,7 +203,6 @@ class OnlineHandShakeController extends Controller
             $result = file_get_contents('https://internal-cms.msi.com.tw/api/v1/nb/add_download', false, $context);
             // dd($postdata);
             $log= new \stdClass();
-            $log->log_table = 'NB_download';
             $log->log_action = 'Approve '.$request->tmp_no.' data to online. By hand';
             $log->log_ip = $request->ip();
             $this->dispatchNow(CreateLog::fromRequest($log));
@@ -171,7 +214,6 @@ class OnlineHandShakeController extends Controller
             $data->save();
 
             $log= new \stdClass();
-            $log->log_table = 'NB_download';
             $log->log_action = 'Reject '.$request->tmp_no.'. By hand';
             $log->log_ip = $request->ip();
             $this->dispatchNow(CreateLog::fromRequest($log));
@@ -189,7 +231,6 @@ class OnlineHandShakeController extends Controller
         $list = $request->all();
         $result = retrieve_by_curl($list, 'POST', 'https://internal-cms.msi.com.tw/api/v1/nb/add_relationships');
         $log= new \stdClass();
-        $log->log_table = 'NB_download';
         $log->log_action = 'update '.$request['download_id'].' online data and relation';
         $log->log_ip = $request->ip();
         $this->dispatchNow(CreateLog::fromRequest($log));

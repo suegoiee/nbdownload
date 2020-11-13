@@ -72,7 +72,7 @@ class CreateLog implements ShouldQueue
         
         $log = new CmsLog;
         $log->setTable($table);
-        $log->log_table = $this->log_table;
+        $log->log_table = 'NB_download';
         $log->log_column = 'all';
         $log->log_status = 0;
         $log->log_action = $this->log_action;

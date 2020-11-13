@@ -71,7 +71,6 @@ class DownloadListOnlineController extends Controller
         }
         
         $log= new \stdClass();
-        $log->log_table = 'NB_download';
         $log->log_action = 'export online download list';
         $log->log_ip = $request->ip();
         $this->dispatchNow(CreateLog::fromRequest($log));

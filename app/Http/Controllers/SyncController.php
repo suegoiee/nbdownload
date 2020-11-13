@@ -92,7 +92,6 @@ class SyncController extends Controller
             $end_time = time()-$time_start;
             $count = $i+1;
             $log= new \stdClass();
-            $log->log_table = 'NB_download';
             $log->log_action = 'sync '.$count.'th time of '.count($model_marketing_recoeds). ' recoeds. '.$end_time.' seconds used';
             $log->log_ip = $request->ip();
             $this->dispatchNow(CreateLog::fromRequest($log));
