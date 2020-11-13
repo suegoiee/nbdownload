@@ -52,7 +52,7 @@ class DownloadListOnlineController extends Controller
             'API_KEY' => env('API_KEY')
         );
 
-        $result = retrieve_data($list, 'POST', 'https://internal-cms.msi.com.tw/api/v1/nb/get_downloadlist');
+        $result = retrieve_by_curl($list, 'POST', 'https://internal-cms.msi.com.tw/api/v1/nb/get_downloadlist');
         $export['title'] = 'Online-Download-List-'.date('Y-m-d_H:i:s');
         $export['head'] = ['Title', 'Device', 'File', 'Size', 'Version', 'Package Version', 'CRC', 'OS', 'Is Show', 'Release'];
         $export['content'] = array();

@@ -15,7 +15,7 @@ class ProductListController extends Controller
             $order = Route::current()->parameter('order');
             return redirect()->route('productList.show', ['keyword'=>$request->search, 'amount' => $amount, 'orderby' => $orderby, 'order' => $order, 'page' => '1']);
         }
-        
+
         $list = array(
             'API_KEY' => env('API_KEY'),
             'search'=>$keyword, 
@@ -47,7 +47,7 @@ class ProductListController extends Controller
             'API_KEY' => env('API_KEY')
         );
 
-        $result = retrieve_by_get_content($list, 'POST', 'https://internal-cms.msi.com.tw/api/v1/nb/get_productlist');
+        $result = retrieve_by_curl($list, 'POST', 'https://internal-cms.msi.com.tw/api/v1/nb/get_productlist');
         $export['title'] = 'Product-List-'.date('Y-m-d_H:i:s');
         $export['head'] = ['Title', 'Model Name', 'Status'];
         $export['content'] = array();
