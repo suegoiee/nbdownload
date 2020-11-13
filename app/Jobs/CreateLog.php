@@ -19,11 +19,6 @@ class CreateLog implements ShouldQueue
     /**
      * @var string
      */
-    private $log_table;
-
-    /**
-     * @var string
-     */
     private $log_action;
 
     /**
@@ -31,17 +26,15 @@ class CreateLog implements ShouldQueue
      */
     private $log_ip;
 
-    public function __construct(string $subject, string $body, string $author)
+    public function __construct(string $log_action, string $log_ip)
     {
-        $this->log_table = $subject;
-        $this->log_action = $body;
-        $this->log_ip = $author;
+        $this->log_action = $log_action;
+        $this->log_ip = $log_ip;
     }
 
     public static function fromRequest($request): self
     {
         return new static(
-            $request->log_table,
             $request->log_action,
             $request->log_ip
         );
