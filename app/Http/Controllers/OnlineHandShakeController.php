@@ -187,7 +187,7 @@ class OnlineHandShakeController extends Controller
             $result = retrieve_by_curl($list, 'POST', 'https://internal-cms.msi.com.tw/api/v1/nb/add_download');
             
             $download = CmsDownloadTmp::where('tmp_no', $request->tmp_no)->first();
-            $download->tmp_status = $status;
+            $download->tmp_status = 1;
             $download->save();
 
             $log= new \stdClass();
