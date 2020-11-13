@@ -28,7 +28,6 @@ class OnlineHandShakeController extends Controller
 
 
 
-
             $tmp_file_path_explode = explode( '/', $request->tmp_file_name );
             $file_name = end( $tmp_file_path_explode );
             $file_extension = pathinfo( $file_name, PATHINFO_EXTENSION );
@@ -58,6 +57,7 @@ class OnlineHandShakeController extends Controller
                         $file_size = ( file_exists( $copy_path ) ) ? filesize( $copy_path ) : 0;
                         if ( $file_size == 0 ) return [ 'status' => 'error', 'message' => 'File size is null!<br>' . $copy_path ];
                         copy( $copy_path, $file_path );
+                        $action = 'Driver/Driver and Application copy from '.$copy_path. ' to '.$file_path.'.';
                     }
                     break;
                 case 'Application':
@@ -79,21 +79,33 @@ class OnlineHandShakeController extends Controller
                         if ( $file_size == 0 ) return [ 'status' => 'error', 'message' => 'File size is null!<br>' . $copy_path ];
 
                         copy( $copy_path, $file_path );
+                        $action = 'Application copy from '.$copy_path. ' to '.$file_path.'.';
                     }
                     break;
                 case 'BIOS':
                     $file_path_name = 'nb/' . $file_rename;
                     $file_size = ( file_exists( '/downloads/bos_exe/' . $file_path_name ) ) ? filesize( '/downloads/bos_exe/' . $file_path_name ) : 0;
-                    if ( $file_size == 0 ) return [ 'status' => 'error', 'message' => 'File size is null!' ];
-                    break;
+                    if ( $file_size == 0 ) {
+                        return [ 'status' => 'error', 'message' => 'File size is null!' ];
+                    }
+                    $action = 'BIOS '.$file_path_name;
+                break;
                 case 'EC':
                 case 'VBIOS':
                     $file_path_name = 'nb/' . $file_rename;
                     $file_size = ( file_exists( '/downloads/archive/frm_exe/' . $file_path_name ) ) ? filesize( '/downloads/archive/frm_exe/' . $file_path_name ) : 0;
-                    if ( $file_size == 0 ) return [ 'status' => 'error', 'message' => 'File size is null!' ];
+                    if ( $file_size == 0 ){ 
+                        return [ 'status' => 'error', 'message' => 'File size is null!' ];
+                    }
+                    $action = 'EC/VBIOS '.$file_path_name;
                     break;
             }
 
+            $log= new \stdClass();
+            $log->log_table = 'NB_download';
+            $log->log_action = $action;
+            $log->log_ip = $request->ip();
+            $this->dispatchNow(CreateLog::fromRequest($log));
 
 
 
@@ -147,7 +159,7 @@ class OnlineHandShakeController extends Controller
             $result = file_get_contents('https://internal-cms.msi.com.tw/api/v1/nb/add_download', false, $context);
             // dd($postdata);
             $log= new \stdClass();
-            $log->log_table = 'cms_download_tmp';
+            $log->log_table = 'NB_download';
             $log->log_action = 'Approve '.$request->tmp_no.' data to online. By hand';
             $log->log_ip = $request->ip();
             $this->dispatchNow(CreateLog::fromRequest($log));
@@ -159,7 +171,7 @@ class OnlineHandShakeController extends Controller
             $data->save();
 
             $log= new \stdClass();
-            $log->log_table = 'cms_download_tmp';
+            $log->log_table = 'NB_download';
             $log->log_action = 'Reject '.$request->tmp_no.'. By hand';
             $log->log_ip = $request->ip();
             $this->dispatchNow(CreateLog::fromRequest($log));
@@ -174,23 +186,10 @@ class OnlineHandShakeController extends Controller
         $request['type_alias'] = CmsDownloadType::where('type_id', $type_array[1])->first()->type_title;
         $request['type_id'] = $type_array[0];
         unset($request['_token']);
-        //dd((array)$request->all());
-        $postdata = http_build_query(
-            $request->all(),
-        );
-        $opts = array('http' =>
-            array(
-                'method'  => 'POST',
-                'header'  => 'Content-Type: application/x-www-form-urlencoded',
-                'content' => $postdata
-            )
-        );
-        
-        //dd($postdata, $request->all());
-        $context  = stream_context_create($opts);
-        $result = file_get_contents('https://internal-cms.msi.com.tw//api/v1/nb/add_relationships', false, $context);
+        $list = $request->all();
+        $result = retrieve_by_curl($list, 'POST', 'https://internal-cms.msi.com.tw/api/v1/nb/add_relationships');
         $log= new \stdClass();
-        $log->log_table = 'cms_download_tmp';
+        $log->log_table = 'NB_download';
         $log->log_action = 'update '.$request['download_id'].' online data and relation';
         $log->log_ip = $request->ip();
         $this->dispatchNow(CreateLog::fromRequest($log));

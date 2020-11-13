@@ -159,7 +159,7 @@
                                                                 @foreach($type_list as $parent_type)
                                                                     @if($parent_type->type_parent == 0)
                                                                         <option disabled style="background:#5F9EA0; color: black;"><b >{{$parent_type->type_title}}</b></option>
-                                                                        <option value="{{$parent_type->type_id}}" {{$list->type_id == $parent_type->type_id ? 'selected' : ''}}>{{$parent_type->type_title}}</option>
+                                                                        <option value="{{$parent_type->type_id}},{{$parent_type->type_id}}" {{$list->type_id == $parent_type->type_id ? 'selected' : ''}}>{{$parent_type->type_title}}</option>
                                                                     @foreach($type_list as $child_type)
                                                                         @if($child_type->type_parent == $parent_type->type_id)
                                                                             <option value="{{$child_type->type_id}},{{$child_type->type_parent}}" {{$list->type_id == $child_type->type_id ? 'selected' : ''}}>{{$child_type->type_title}}</option>

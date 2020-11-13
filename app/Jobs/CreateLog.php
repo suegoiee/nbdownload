@@ -61,7 +61,7 @@ class CreateLog implements ShouldQueue
               `log_table` varchar(50) COLLATE utf8mb4_unicode_ci NOT NULL,
               `log_column` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
               `log_status` tinyint(3) unsigned NOT NULL,
-              `log_action` varchar(50) COLLATE utf8mb4_unicode_ci NOT NULL,
+              `log_action` text COLLATE utf8mb4_unicode_ci NOT NULL,
               `log_ip` varchar(50) COLLATE utf8mb4_unicode_ci NOT NULL,
               `log_user_id` int(11) NOT NULL,
               `log_table_id` bigint(20) NOT NULL,
