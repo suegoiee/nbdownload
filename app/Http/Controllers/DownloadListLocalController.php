@@ -14,6 +14,7 @@ class DownloadListLocalController extends Controller
 {    
     public function index(Request $request, $status, $keyword, $amount, $orderby, $order)
     {
+        $module_name = 'local_download_list';
         $data_status = ['Reject' => 2, 'Approve' => 1, 'Draft' => 0];
 
         if(isset($request->search)){
@@ -43,7 +44,7 @@ class DownloadListLocalController extends Controller
         }
         $data = $data->orderby($orderby, $order)->paginate($amount);
         // dd($data);
-        return view('local_download_list', compact('data', 'status', 'keyword', 'amount', 'orderby', 'order', 'file_path_list'));
+        return view('local_download_list', compact('data', 'status', 'keyword', 'amount', 'orderby', 'order', 'file_path_list', 'module_name'));
     }
 
     public function export(Request $request, $status, $keyword, $amount, $orderby, $order)

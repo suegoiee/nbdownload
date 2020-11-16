@@ -44,8 +44,8 @@ class OnlineHandShakeController extends Controller
             {
                 case 'Driver':
                 case 'Driver and Application':
-                    if ( empty( $request->tmp_file_category ) ) {
-                        $log->log_action = 'Driver/Application: '.$request->tmp_no.' folder is empty, tmp_file_category null';
+                    if ( empty( $request->file_path ) ) {
+                        $log->log_action = 'Driver/Application: '.$request->tmp_no.' file path not selected';
                         $this->dispatchNow(CreateLog::fromRequest($log));
                         return [ 'status' => 'error', 'message' => 'File folder is empty.' ];
                     }
@@ -68,7 +68,7 @@ class OnlineHandShakeController extends Controller
                         $file_path_name = $request->tmp_file_name;
                     }
                     else{
-                        $file_path_name = $request->tmp_file_category . '/' . $file_rename;
+                        $file_path_name = $request->file_path . '/' . $file_rename;
                         $file_path = '/downloads/nb_drivers/' . $file_path_name;
                         if ( is_file( $file_path ) ) {
                             $log->log_action = 'Driver/Application: '.$request->tmp_no.' Server already have a same file in '.$file_path;
@@ -210,6 +210,22 @@ class OnlineHandShakeController extends Controller
     }
     
     public function updateOnlineData(Request $request)
+    {
+        $request['API_KEY'] = env('API_KEY');
+        $type_array = explode(',', $request->type_id);
+        $request['type_alias'] = CmsDownloadType::where('type_id', $type_array[1])->first()->type_title;
+        $request['type_id'] = $type_array[0];
+        unset($request['_token']);
+        $list = $request->all();
+        $result = retrieve_by_curl($list, 'POST', 'https://internal-cms.msi.com.tw/api/v1/nb/add_relationships');
+        $log= new \stdClass();
+        $log->log_action = 'update '.$request['download_id'].' online data and relation';
+        $log->log_ip = $request->ip();
+        $this->dispatchNow(CreateLog::fromRequest($log));
+        return redirect()->back();
+    }
+    
+    public function createOnlineData(Request $request)
     {
         $request['API_KEY'] = env('API_KEY');
         $type_array = explode(',', $request->type_id);

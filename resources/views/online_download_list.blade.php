@@ -91,8 +91,115 @@
                             </select>
                             <p>&nbsp data per page</p>
                             <a href="{{route('downloadListOnline.export', ['keyword'=>$keyword, 'amount' => $amount, 'orderby' => $orderby, 'order' => $order, 'page' => $page])}}"><button type="button" class="btn btn-danger table-control-button">Export CSV</button></a>
+                            @can('josh')
+                                <button type="button" class="btn btn-primary table-control-button" data-toggle="modal" data-target="#modal-create-manual">Create Manual</button>
+                            @endcan
                         </div>
                     </form>
+                    <div class="modal fade" id="modal-create-manual">
+                        <div class="modal-dialog modal-xl">
+                            <form id="modal-create-manual" action="{{route('onlineHandShake.createOnlineData')}}" method="POST">
+                                @csrf
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <h4 class="modal-title">Create Online Data Manually</h4>
+                                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                            <span aria-hidden="true">&times;</span>
+                                        </button>
+                                    </div>
+                                    <div class="modal-body">
+                                        <div class="row model-group">
+                                            <div class="col-sm-10">
+                                                <input name="action" type="hidden" value="insert">
+                                                Title<input name="download_title" class="form-control" type="text">
+                                                File Path<input name="download_file" class="form-control" type="text">
+                                                Size<input name="download_size" class="form-control" type="text">
+                                                OS<input name="os_id" class="form-control" type="text">
+                                                Type
+                                                <select name="type_id" class="form-control" type="text">
+                                                    @foreach($type_list as $parent_type)
+                                                        @if($parent_type->type_parent == 0)
+                                                            <option disabled style="background:#5F9EA0; color: black;"><b >{{$parent_type->type_title}}</b></option>
+                                                            <option value="{{$parent_type->type_id}},{{$parent_type->type_id}}">{{$parent_type->type_title}}</option>
+                                                        @foreach($type_list as $child_type)
+                                                            @if($child_type->type_parent == $parent_type->type_id)
+                                                                <option value="{{$child_type->type_id}},{{$child_type->type_parent}}">{{$child_type->type_title}}</option>
+                                                            @endif
+                                                        @endforeach
+                                                        @endif
+                                                    @endforeach
+                                                </select>
+                                                Guid<input name="download_guid" class="form-control" type="text">
+                                                CRC<input name="download_crc" class="form-control" type="text">
+                                                Device ID<input name="download_deviceid" class="form-control" type="text">
+                                                Upgrade Guid<input name="download_upgradeguid" class="form-control" type="text">
+                                                Package Version<input name="download_packageversion" class="form-control" type="text">
+                                                Version<input name="download_version" class="form-control" type="text">
+                                                Description<textarea name="download_description" class="form-control" type="text"></textarea>
+                                                Description TW<textarea name="download_description_tw" class="form-control" type="text"></textarea>
+                                                Description CN<textarea name="download_description_cn" class="form-control" type="text"></textarea>
+                                                Note<input name="download_note" class="form-control" type="text">
+                                                Note TW<input name="download_note_tw" class="form-control" type="text">
+                                                Note CN<input name="download_note_cn" class="form-control" type="text">
+                                                Other<input name="download_other" class="form-control" type="text">
+                                                Reboot<input name="download_reboot" class="form-control" type="text">
+                                                Release<input name="download_release" class="form-control" type="text">
+                                                Show
+                                                <select name="download_showed" class="form-control" type="select">
+                                                    <option value="0">No show</option>
+                                                    <option value="1">Show</option>
+                                                </select>
+                                            </div>
+                                        </div>
+
+
+                                        <div class="row model-group">
+                                            <div class="col-sm-10">
+                                            <h4 class="modal-title">Model Relation</h4>
+                                            <div class="input-group">
+                                                <input class="form-control search-product" type="search" placeholder="Search" aria-label="Search" id="create_search">
+                                                <div class="input-group-append">
+                                                    <button class="btn btn-navbar" type="button" >
+                                                        <i class="fas fa-search"></i>
+                                                    </button>
+                                                </div>
+                                            </div>
+                                            </div>
+                                            <div class="col-sm-4 ">
+                                                <div class="form-group">
+                                                    <label>Products</label>
+                                                    <button type="button" class="btn btn-default btn-add-all" value="create_search">>></button>
+                                                    <select multiple class="form-control" id="product_pool-create_search" size="20"></select>
+                                                </div>
+                                            </div>
+                                            <div class="col-sm-2">
+                                                <div class="form-group">
+                                                    <label>action</label>
+                                                    <div class="form-group">
+                                                        <button type="button" class="btn btn-default btn-add-selected" value="create_search">></button>
+                                                        <br>
+                                                        <button type="button" class="btn btn-default btn-remove-selected" value="create_search"><</button>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="col-sm-4">
+                                                <div class="form-group">
+                                                    <label>Product relation</label>
+                                                    <button type="button" class="btn btn-default btn-remove-all" value="create_search">X</button>
+                                                    <select multiple class="form-control" id="seleted_relation-create_search" size="20"></select>
+                                                    <select style="display:none;" name="product_id[]" multiple class="form-control" id="seleted_product-create_search"></select>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="modal-footer justify-content-between">
+                                        <button type="button" class="btn btn-danger" data-dismiss="modal">Cancel</button>
+                                        <button type="submit" class="btn btn-primary">Confirm</button>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
                 </div>
                 <div class="card-body">
                     <table class="table table-bordered table-striped">
@@ -154,7 +261,12 @@
                                                             Title<input name="download_title" class="form-control" type="text" value="{{$list->download_title}}">
                                                             File Path<input name="download_file" class="form-control" type="text" value="{{$list->download_file}}">
                                                             Size<input name="download_size" class="form-control" type="text" value="{{$list->download_size}}">
-                                                            OS<input name="os_id" class="form-control" type="text" value="{{$list->os_id}}">
+                                                            OS
+                                                            <select name="os_id" class="form-control" type="text">
+                                                                @foreach($os_list as $os)
+                                                                    <option value="{{$os->os_id}}" {{$os->os_id == $list->os_id ? 'selected' : ''}}>{{$os->os_title}}</option>
+                                                                @endforeach
+                                                            </select>
                                                             Type
                                                             <select name="type_id" class="form-control" type="text">
                                                                 @foreach($type_list as $parent_type)
@@ -183,7 +295,7 @@
                                                             Note CN<input name="download_note_cn" class="form-control" type="text" value="{{$list->download_note_cn}}">
                                                             Other<input name="download_other" class="form-control" type="text" value="{{$list->download_other}}">
                                                             Reboot<input name="download_reboot" class="form-control" type="text" value="{{$list->download_reboot}}">
-                                                            Release<input name="download_release" class="form-control" type="text" value="{{$list->download_release}}">
+                                                            Release<input name="download_release" class="form-control" type="datetime-local" value="{{date('Y-m-d\TH:i', strtotime($list->download_release))}}">
                                                             Show
                                                             <select name="download_showed" class="form-control" type="select">
                                                                 <option value="{{$list->download_showed}}" {{$list->download_showed == 0 ? 'selected' : ''}}>No show</option>

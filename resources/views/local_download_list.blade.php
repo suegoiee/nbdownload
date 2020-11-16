@@ -176,14 +176,16 @@
                                                             </button>
                                                         </div>
                                                         <div class="modal-body">
-                                                            <div class="form-group">
-                                                                <label>File Path : </label>
-                                                                <select name="file_path" class="form-control select2" style="width: 100%;">
-                                                                    @foreach($file_path_list as $file)
-                                                                        <option value="{{$file['index']}}">{{$file['index']}}</option>
-                                                                    @endforeach
-                                                                </select>
-                                                            </div>
+                                                            @if( $download_data->tmp_category == 'Driver and Application' || $download_data->tmp_category == 'Driver' )
+                                                                <div class="form-group">
+                                                                    <label>File Path : </label>
+                                                                    <select name="file_path" class="form-control select2" style="width: 100%;">
+                                                                        @foreach($file_path_list as $file)
+                                                                            <option value="{{$file['index']}}">{{$file['index']}}</option>
+                                                                        @endforeach
+                                                                    </select>
+                                                                </div>
+                                                            @endif
                                                             <p>You are about to approve <b>{{$download_data->tmp_title}}</b> to online system.</p>
                                                             <p> Please make sure the data is correct before confirming.</p>
                                                             <input type="hidden" name="tmp_no" value="{{$download_data->tmp_no}}">
@@ -255,38 +257,6 @@
             </div>
         </div>
     </div>
-    <script>
-        $(function () {
-            $(".btn-batch").on('click', function(){
-                var id = [];
-                $(".downloadBatch").each( function(key){
-                    if($( this ).is(":checked")){
-                        id.push($( this ).val());
-                    }
-                });
-                $.ajaxSetup({
-                    headers: {
-                        'X-CSRF-TOKEN': $("#csrf").val()
-                    }
-                });
-                $.ajax({
-                    type: "POST",
-                    url: $("#downloadListLocal-api").val(),
-                    data: {
-                        action:$(this).val(),
-                        id:id
-                    },
-                    success:function(msg){
-                        //console.log(msg);
-                        location.reload();
-                    },
-                    error:function(msg){
-                        console.log(msg);
-                    }
-                });
-            });
-            $('.select2').select2()
-        });
-    </script>
+    <script src="{{asset('storage/js/'.$module_name.'/'.$module_name.'.js')}}"></script>
 </section>
 @endsection

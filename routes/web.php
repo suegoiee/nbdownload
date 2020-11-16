@@ -49,6 +49,7 @@ Route::prefix('onlineHandShake')->name('onlineHandShake')->middleware('auth')->g
     Route::post('/confirmDownload',[OnlineHandShakeController::class, 'confirmDownload'])->name('.confirmDownload');
     Route::post('/RejectDownload',[OnlineHandShakeController::class, 'RejectDownload'])->name('.RejectDownload');
     Route::post('/updateOnlineData',[OnlineHandShakeController::class, 'updateOnlineData'])->name('.updateOnlineData');
+    Route::post('/createOnlineData',[OnlineHandShakeController::class, 'createOnlineData'])->name('.createOnlineData');
 });
 
 Route::prefix('downloadListLocal')->name('downloadListLocal')->middleware('auth')->group(function () {

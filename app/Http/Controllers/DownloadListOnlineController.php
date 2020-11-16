@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Auth;
 use App\Jobs\CreateLog;
 use App\Models\cms\CmsLog;
+use App\Models\cms\CmsDownloados;
 use App\Models\cms\CmsDownloadTmp;
 use App\Models\cms\CmsDownloadType;
 use Illuminate\Http\Request;
@@ -21,6 +22,7 @@ class DownloadListOnlineController extends Controller
             return redirect()->route('downloadListOnline.show', ['keyword'=>$request->search, 'amount' => $amount, 'orderby' => $orderby, 'order' => $order, 'page' => '1']);
         }
         $type_list = CmsDownloadType::all();
+        $os_list = CmsDownloados::all();
         $list = array(
             'API_KEY' => env('API_KEY'),
             'search'=>$keyword, 
@@ -38,7 +40,7 @@ class DownloadListOnlineController extends Controller
             $data->$key = (object)$value;
         }
         // dd($data);
-        return view('online_download_list', compact('data', 'result', 'keyword', 'amount', 'orderby', 'order', 'page', 'type_list'));
+        return view('online_download_list', compact('data', 'result', 'keyword', 'amount', 'orderby', 'order', 'page', 'type_list', 'os_list'));
     }
 
     public function export(Request $request, $keyword, $amount, $orderby, $order, $page)
