@@ -185,7 +185,7 @@ class OnlineHandShakeController extends Controller
                 'download_size' => $file_size,
                 'action' => 'insert'
             );
-            $result = retrieve_by_curl($list, 'GET', 'https://internal-cms.msi.com.tw/api/v1/nb/add_download');
+            $result = retrieve_by_curl($list, 'POST', 'https://internal-cms.msi.com.tw/api/v1/nb/add_download');
             
             $download = CmsDownloadTmp::where('tmp_no', $request->tmp_no)->first();
             $download->tmp_status = 1;
