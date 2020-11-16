@@ -2,6 +2,7 @@
 
 namespace App\Models\cms;
 
+use App\Models\User;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
@@ -42,4 +43,9 @@ class CmsLog extends Model
         'tmp_file_category',
         'tmp_description',
     ];
+
+    public function user()
+    {
+        return $this->hasOne(User::class, 'id', 'log_user_id');
+    }
 }

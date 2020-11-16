@@ -51,13 +51,11 @@
     <div class="container-fluid">
         <div class="row mb-2">
             <div class="col-sm-6">
-                <h1 class="page-title">Log Data</h1>
-                <form class="form-inline ml-3 page-title">
+                <h1 class="page-title">Log Data {{date('Y m', strtotime($date))}}</h1>
+                <form id="log_picker" method="GET" action="{{route('log.show', ['date'=>date('Ym'), 'keyword'=>$keyword, 'amount' => $amount, 'orderby' => $orderby, 'order' => $order])}}" class="form-inline ml-3 page-title">
                     <div class="input-group input-group-sm">
                         <p>log date &nbsp</p>
-                        <select class="form-control">
-                            <option value="{{route('log.show', ['date'=>'202011', 'keyword'=>$keyword, 'amount' => $amount, 'orderby' => $orderby, 'order' => $order])}}" {{$date == '202011' ? 'selected' : ''}}>202011</option>
-                        </select>
+                        <input id="date" class="form-control" type="month" name="log_date" value="{{date('Ym')}}">
                     </div>
                 </form>
             </div>
@@ -108,7 +106,7 @@
                                 <tr>
                                     <th><a href="{{route('log.show', ['date'=>$date, 'keyword'=>$keyword, 'amount' => $amount, 'orderby' => 'log_action', 'order' => $order == 'ASC' && $orderby == 'log_action' ? 'DESC' : 'ASC'])}}">Action<i class="{{$orderby == 'log_action' ? $order : ''}}"></i></a></th>
                                     <th><a href="{{route('log.show', ['date'=>$date, 'keyword'=>$keyword, 'amount' => $amount, 'orderby' => 'log_ip', 'order' => $order == 'ASC' && $orderby == 'log_ip' ? 'DESC' : 'ASC'])}}">IP<i class="{{$orderby == 'log_ip' ? $order : ''}}"></i></a></th>
-                                    <th><a href="{{route('log.show', ['date'=>$date, 'keyword'=>$keyword, 'amount' => $amount, 'orderby' => 'log_user_id', 'order' => $order == 'ASC' && $orderby == 'log_user_id' ? 'DESC' : 'ASC'])}}">User ID<i class="{{$orderby == 'log_user_id' ? $order : ''}}"></i></a></th>
+                                    <th><a href="{{route('log.show', ['date'=>$date, 'keyword'=>$keyword, 'amount' => $amount, 'orderby' => 'log_user_id', 'order' => $order == 'ASC' && $orderby == 'log_user_id' ? 'DESC' : 'ASC'])}}">User<i class="{{$orderby == 'log_user_id' ? $order : ''}}"></i></a></th>
                                     <th><a href="{{route('log.show', ['date'=>$date, 'keyword'=>$keyword, 'amount' => $amount, 'orderby' => 'log_create', 'order' => $order == 'ASC' && $orderby == 'log_create' ? 'DESC' : 'ASC'])}}">Create Date<i class="{{$orderby == 'log_create' ? $order : ''}}"></i></a></th>
                                 </tr>
                             </thead>
@@ -117,7 +115,7 @@
                                     <tr>
                                         <td>{{$log->log_action}}</td>
                                         <td>{{$log->log_ip}}</td>
-                                        <td>{{$log->log_user_id}}</td>
+                                        <td>{{$log->user->name}} ( {{$log->log_user_id}} )</td>
                                         <td>{{$log->log_create}}</td>
                                     </tr>
                                 @endforeach
@@ -126,7 +124,7 @@
                                 <tr>
                                     <th><a href="{{route('log.show', ['date'=>$date, 'keyword'=>$keyword, 'amount' => $amount, 'orderby' => 'log_action', 'order' => $order == 'ASC' && $orderby == 'log_action' ? 'DESC' : 'ASC'])}}">Action<i class="{{$orderby == 'log_action' ? $order : ''}}"></i></a></th>
                                     <th><a href="{{route('log.show', ['date'=>$date, 'keyword'=>$keyword, 'amount' => $amount, 'orderby' => 'log_ip', 'order' => $order == 'ASC' && $orderby == 'log_ip' ? 'DESC' : 'ASC'])}}">IP<i class="{{$orderby == 'log_ip' ? $order : ''}}"></i></a></th>
-                                    <th><a href="{{route('log.show', ['date'=>$date, 'keyword'=>$keyword, 'amount' => $amount, 'orderby' => 'log_user_id', 'order' => $order == 'ASC' && $orderby == 'log_user_id' ? 'DESC' : 'ASC'])}}">User ID<i class="{{$orderby == 'log_user_id' ? $order : ''}}"></i></a></th>
+                                    <th><a href="{{route('log.show', ['date'=>$date, 'keyword'=>$keyword, 'amount' => $amount, 'orderby' => 'log_user_id', 'order' => $order == 'ASC' && $orderby == 'log_user_id' ? 'DESC' : 'ASC'])}}">User<i class="{{$orderby == 'log_user_id' ? $order : ''}}"></i></a></th>
                                     <th><a href="{{route('log.show', ['date'=>$date, 'keyword'=>$keyword, 'amount' => $amount, 'orderby' => 'log_create', 'order' => $order == 'ASC' && $orderby == 'log_create' ? 'DESC' : 'ASC'])}}">Create Date<i class="{{$orderby == 'log_create' ? $order : ''}}"></i></a></th>
                             </tfoot>
                         </table>
@@ -136,5 +134,10 @@
             </div>
         </div>
     </div>
+    <script>
+        $("#date").on('change', function(){
+            $("#log_picker").submit();
+        });
+    </script>
 </section>
 @endsection
