@@ -29,4 +29,9 @@ class PermissionPolicy
     {
         return $user->isSuper();
     }
+
+    public function josh(User $user)
+    {
+        return $user->isJosh();
+    }
 }

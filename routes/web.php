@@ -57,7 +57,7 @@ Route::prefix('downloadListLocal')->name('downloadListLocal')->middleware('auth'
     Route::get('/export/{status}/{keyword}/{amount}/{orderby}/{order}',[DownloadListLocalController::class, 'export'])->name('.export');
 });
 
-Route::prefix('log')->name('log')->middleware(['auth', 'super'])->group(function () {
+Route::prefix('log')->name('log')->middleware(['auth', 'josh'])->group(function () {
     Route::get('/{date}/{keyword}/{amount}/{orderby}/{order}',[LogController::class, 'index'])->name('.show');
     Route::get('/export/{date}/{keyword}/{amount}/{orderby}/{order}',[LogController::class, 'export'])->name('.export');
 });

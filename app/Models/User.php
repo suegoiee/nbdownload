@@ -20,6 +20,7 @@ class User extends Authenticatable
 
     const USER = 0;
     const ADMIN = 1;
+    const JOSH = 9;
     /**
      * The attributes that are mass assignable.
      *
@@ -72,5 +73,10 @@ class User extends Authenticatable
     public function isSuper()
     {
       return $this->permission > self::ADMIN;
+    }
+
+    public function isJosh()
+    {
+      return $this->permission > self::JOSH;
     }
 }

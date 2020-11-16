@@ -28,7 +28,7 @@
               </a>
             </li>
           @endcan
-          @can('super')
+          @can('josh')
             <li class="nav-item @yield('log')">
               <a href="{{route('log.show', ['date'=>'202011', 'keyword'=>'all-data', 'amount' => '15', 'orderby' => 'log_create', 'order' => 'DESC', 'page' => 1])}}" class="nav-link @yield('log-href')">
                 <i class="nav-icon fas fa-calendar-alt"></i>
@@ -40,7 +40,7 @@
           @endcan
           <li class="nav-item has-treeview @yield('home-menu')">
             <a href="{{route('home.index')}}" class="nav-link @yield('home-href')">
-              <i class="nav-icon fas fa-tachometer-alt"></i>
+              <i class="nav-icon fas fa-home"></i>
               <p>
                 Home
                 <i class="right fas fa-angle-left"></i>

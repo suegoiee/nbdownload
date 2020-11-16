@@ -27,5 +27,6 @@ class AuthServiceProvider extends ServiceProvider
 
         Gate::define('admin', 'App\Policies\PermissionPolicy@admin');
         Gate::define('super', 'App\Policies\PermissionPolicy@super');
+        Gate::define('josh', 'App\Policies\PermissionPolicy@josh');
     }
 }
