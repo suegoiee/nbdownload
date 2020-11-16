@@ -24,7 +24,7 @@ class ProfileController extends Controller
         $user->save();
 
         $log= new \stdClass();
-        $log->log_action = Auth::user()->id. 'change name to '.$request->name;
+        $log->log_action = Auth::user()->id. ' has change name to '.$request->name;
         $log->log_ip = $request->ip();
         $this->dispatchNow(CreateLog::fromRequest($log));
         

@@ -1,7 +1,7 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
-// use App\Http\Middleware\Admin;
+use App\Http\Controllers\LogController;
 use App\Http\Controllers\ApiController;
 use App\Http\Controllers\SyncController;
 use App\Http\Controllers\UserManageController;
@@ -55,6 +55,11 @@ Route::prefix('downloadListLocal')->name('downloadListLocal')->middleware('auth'
     Route::get('/{status}/{keyword}/{amount}/{orderby}/{order}',[DownloadListLocalController::class, 'index'])->name('.show');
     Route::post('/downloadActionByBatch',[DownloadListLocalController::class, 'downloadActionByBatch'])->name('.downloadActionByBatch');
     Route::get('/export/{status}/{keyword}/{amount}/{orderby}/{order}',[DownloadListLocalController::class, 'export'])->name('.export');
+});
+
+Route::prefix('log')->name('log')->middleware(['auth', 'super'])->group(function () {
+    Route::get('/{date}/{keyword}/{amount}/{orderby}/{order}',[LogController::class, 'index'])->name('.show');
+    Route::get('/export/{date}/{keyword}/{amount}/{orderby}/{order}',[LogController::class, 'export'])->name('.export');
 });
 
 Route::prefix('sync')->name('sync')->middleware('auth')->group(function () {
