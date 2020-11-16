@@ -441,6 +441,10 @@
             if(e.which == 13) {
                 event.preventDefault();
                 var id = $(this).attr('id');
+                var selected_list = [];
+                $("#seleted_product-"+id+' option:selected').each(function(key, value){
+                    selected_list.push($(value).val());
+                });
                 $.ajax({
                     type: "GET",
                     url: $("#productList-api").val(),
@@ -450,7 +454,9 @@
                     success:function(msg){
                         $("#product_pool-"+id).empty();
                         msg.forEach(function(value) {
-                            $("#product_pool-"+id).append('<option value='+value['product_id']+'>'+value['product_title'] +'( '+ value['product_model_name'] +' )' +'</option>');
+                            if(jQuery.inArray(value['product_id'].toString(), selected_list) == -1){
+                                $("#product_pool-"+id).append('<option value='+value['product_id']+'>'+value['product_title'] +'( '+ value['product_model_name'] +' )' +'</option>');
+                            }
                         });
                     },
                     error:function(msg){
