@@ -13,9 +13,13 @@ use Illuminate\Support\Facades\Schema;
 
 class LogController extends Controller
 {    
+    public function __construct()
+    {
+        $this->moduleName='log';
+    }
+
     public function index(Request $request, $date, $keyword, $amount, $orderby, $order)
     {
-        //dd($request->all());
         if(isset($request->log_date)){
             $date = date('Ym', strtotime($request->log_date));
             $keyword = Route::current()->parameter('keyword');
@@ -50,7 +54,16 @@ class LogController extends Controller
             $array = [];
             $data = new Paginator($array, $amount);
         }
-        return view('log_list', compact('data', 'date', 'keyword', 'amount', 'orderby', 'order'));
+        $data = [
+            'module_name'=> $this->moduleName,
+            'data'=>$data,
+            'date'=>$date, 
+            'keyword'=>$keyword, 
+            'amount'=>$amount, 
+            'orderby'=>$orderby, 
+            'order'=>$order
+        ];
+        return view('log_list', $data);
     }
 
     public function export(Request $request, $date, $keyword, $amount, $orderby, $order)

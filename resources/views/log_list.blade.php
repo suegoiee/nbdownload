@@ -5,48 +5,7 @@
 @extends('layouts.base')
 
 @section('content')
-<style>
-    .ASC {
-        border: solid red;
-        border-width: 0 4px 4px 0;
-        display: inline-block;
-        padding: 3px;
-        margin-left: 5px;
-        transform: rotate(45deg);
-        -webkit-transform: rotate(45deg);
-    }
-    .DESC {
-        border: solid red;
-        border-width: 0 4px 4px 0;
-        display: inline-block;
-        padding: 3px;
-        margin-left: 5px;
-        transform: rotate(-135deg);
-        -webkit-transform: rotate(-135deg);
-    }
-    .page-title{
-      position: relative; 
-      float: left;
-    }
-    .table-title{
-      position: relative; 
-      float: left;
-      padding-left: 10px;
-    }
-    .table-search{
-      position: relative; 
-      float: right;
-    }
-    .table-control-button{
-      position: relative; 
-      float: left;
-      margin-left: 30px;
-    }
-    .card-body{
-        overflow:auto;
-        display:block;
-    }
-</style>
+<link rel="stylesheet" href="{{asset('storage/css/'.$module_name.'/'.$module_name.'.css')}}">
 <section class="content-header">
     <div class="container-fluid">
         <div class="row mb-2">
@@ -134,10 +93,6 @@
             </div>
         </div>
     </div>
-    <script>
-        $("#date").on('change', function(){
-            $("#log_picker").submit();
-        });
-    </script>
+    <script src="{{asset('storage/js/'.$module_name.'/'.$module_name.'.js')}}"></script>
 </section>
 @endsection

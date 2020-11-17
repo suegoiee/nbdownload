@@ -3,10 +3,16 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use Illuminate\Pagination\Paginator;
 use Illuminate\Support\Facades\Route;
 
 class ProductListController extends Controller
 {    
+    public function __construct()
+    {
+        $this->moduleName='product_list';
+    }
+
     public function show(Request $request, $keyword, $amount, $orderby, $order, $page)
     {
         if(isset($request->search)){
@@ -33,7 +39,18 @@ class ProductListController extends Controller
         {
             $data->$key = (object)$value;
         }
-        return view('product_list', compact('data', 'result', 'keyword', 'amount', 'orderby', 'order', 'page'));
+        //$data = new Paginator($data, $amount);
+        $data = [
+            'module_name'=> $this->moduleName,
+            'data'=>$data,
+            'result'=>$result,
+            'keyword'=>$keyword, 
+            'amount'=>$amount, 
+            'orderby'=>$orderby, 
+            'order'=>$order,
+            'page'=>$page
+        ];
+        return view('product_list', $data);
     }
 
     public function export($keyword, $amount, $orderby, $order, $page)

@@ -13,6 +13,11 @@ use Illuminate\Support\Facades\Route;
 
 class DownloadListOnlineController extends Controller
 {    
+    public function __construct()
+    {
+        $this->moduleName='online_download_list';
+    }
+
     public function show(Request $request, $keyword, $amount, $orderby, $order, $page)
     {
         $module_name = 'online_download_list';

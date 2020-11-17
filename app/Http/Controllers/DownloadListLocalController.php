@@ -12,6 +12,11 @@ use Illuminate\Support\Facades\Route;
 
 class DownloadListLocalController extends Controller
 {    
+    public function __construct()
+    {
+        $this->moduleName='local_download_list';
+    }
+
     public function index(Request $request, $status, $keyword, $amount, $orderby, $order)
     {
         $module_name = 'local_download_list';
