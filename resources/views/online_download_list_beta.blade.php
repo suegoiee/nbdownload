@@ -70,12 +70,17 @@
                                     </div>
                                     <div class="modal-body">
                                         <div class="row model-group">
-                                            <div class="col-sm-10">
+                                            <div class="col-sm-12">
                                                 <input name="action" type="hidden" value="insert">
                                                 Title<input name="download_title" class="form-control" type="text">
                                                 File Path<input name="download_file" class="form-control" type="text">
                                                 Size<input name="download_size" class="form-control" type="text">
-                                                OS<input name="os_id" class="form-control" type="text">
+                                                OS
+                                                <select name="os_id" class="form-control" type="text">
+                                                    @foreach($os_list as $os)
+                                                        <option value="{{$os->os_id}}">{{$os->os_title}}</option>
+                                                    @endforeach
+                                                </select>
                                                 Type
                                                 <select name="type_id" class="form-control" type="text">
                                                     @foreach($type_list as $parent_type)
@@ -114,41 +119,66 @@
                                         </div>
 
 
-                                        <div class="row model-group">
-                                            <div class="col-sm-10">
-                                                <h4 class="modal-title">Model Relation</h4>
-                                                <div class="input-group">
-                                                    <input class="form-control search-product" type="search" placeholder="Search" aria-label="Search" id="create_search">
-                                                    <div class="input-group-append">
-                                                        <button class="btn btn-navbar" type="button" >
-                                                            <i class="fas fa-search"></i>
-                                                        </button>
+                                        <div class="relation-group">
+                                            <div class="row model-group">
+                                                <div class="col-sm-12">
+                                                    <b><h2 class="modal-group-title">Model Relation</h2></b>
+                                                </div>
+                                                <div class="col-sm-3">
+                                                    <h5 class="modal-title">Search Model</h5>
+                                                    <div class="input-group">
+                                                        <input class="form-control search-model" type="search" placeholder="Search" aria-label="Search" model-id="create_search">
+                                                        <div class="input-group-append">
+                                                            <button class="btn btn-navbar" type="button" >
+                                                                <i class="fas fa-search"></i>
+                                                            </button>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="col-sm-4">
+                                                    <h5 class="modal-title">Search Product</h5>
+                                                    <div class="input-group">
+                                                        <input class="form-control search-product" type="search" placeholder="Search" aria-label="Search" model-id="create_search">
+                                                        <div class="input-group-append">
+                                                            <button class="btn btn-navbar" type="button" >
+                                                                <i class="fas fa-search"></i>
+                                                            </button>
+                                                        </div>
                                                     </div>
                                                 </div>
                                             </div>
-                                            <div class="col-sm-4 ">
-                                                <div class="form-group">
-                                                    <label>Products</label>
-                                                    <button type="button" class="btn btn-default btn-add-all" value="create_search">>></button>
-                                                    <select multiple class="form-control" id="product_pool-create_search" size="20"></select>
-                                                </div>
-                                            </div>
-                                            <div class="col-sm-2">
-                                                <div class="form-group">
-                                                    <label>action</label>
+                                            <div class="row model-group">
+                                                <div class="col-sm-3 relation-action">
+                                                    <!-- Select multiple-->
                                                     <div class="form-group">
-                                                        <button type="button" class="btn btn-default btn-add-selected" value="create_search">></button>
-                                                        <br>
-                                                        <button type="button" class="btn btn-default btn-remove-selected" value="create_search"><</button>
+                                                        <label>Models</label>
+                                                        <button type="button" class="form-control btn btn-default btn-add-model-product" value="create_search">+</button>
+                                                        <select class="form-control" id="model_pool-create_search" size="20"></select>
                                                     </div>
                                                 </div>
-                                            </div>
-                                            <div class="col-sm-4">
-                                                <div class="form-group">
-                                                    <label>Product relation</label>
-                                                    <button type="button" class="btn btn-default btn-remove-all" value="create_search">X</button>
-                                                    <select multiple class="form-control" id="seleted_relation-create_search" size="20"></select>
-                                                    <select style="display:none;" name="product_id[]" multiple class="form-control" id="seleted_product-create_search"></select>
+                                                <div class="col-sm-4 relation-action">
+                                                    <!-- Select multiple-->
+                                                    <div class="form-group">
+                                                        <label>Products</label>
+                                                        <button type="button" class="form-control btn btn-default btn-add-all" value="create_search">>></button>
+                                                        <select multiple class="form-control" id="product_pool-create_search" size="20"></select>
+                                                    </div>
+                                                </div>
+                                                <div class="col-sm-1">
+                                                        <div class="form-group relation-action">
+                                                            <label>action</label>
+                                                            <button type="button" class="form-control btn btn-default btn-add-selected btn-relation-action" value="create_search">></button>
+                                                            <br>
+                                                            <button type="button" class="form-control btn btn-default btn-remove-selected btn-relation-action" value="create_search"><</button>
+                                                        </div>
+                                                </div>
+                                                <div class="col-sm-4">
+                                                    <div class="form-group relation-action">
+                                                        <label>Product relation</label>
+                                                        <button type="button" class="form-control btn btn-default btn-remove-all" value="create_search">X</button>
+                                                        <select multiple class="form-control" id="seleted_relation-create_search" size="20"></select>
+                                                        <select style="display:none;" name="product_id[]" multiple class="form-control" id="seleted_product-create_search"></select>
+                                                    </div>
                                                 </div>
                                             </div>
                                         </div>

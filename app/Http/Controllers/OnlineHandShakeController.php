@@ -234,7 +234,9 @@ class OnlineHandShakeController extends Controller
         $request['type_id'] = $type_array[0];
         unset($request['_token']);
         $list = $request->all();
+        dd(http_build_query($list));
         $result = retrieve_by_curl($list, 'POST', 'https://internal-cms.msi.com.tw/api/v1/nb/add_relationships');
+        dd($result);
         $log= new \stdClass();
         $log->log_action = 'update '.$request['download_id'].' online data and relation';
         $log->log_ip = $request->ip();
