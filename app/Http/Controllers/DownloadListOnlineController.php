@@ -15,6 +15,7 @@ class DownloadListOnlineController extends Controller
 {    
     public function show(Request $request, $keyword, $amount, $orderby, $order, $page)
     {
+        $module_name = 'online_download_list';
         if(isset($request->search)){
             $amount = Route::current()->parameter('amount');
             $orderby = Route::current()->parameter('orderby');
@@ -40,7 +41,11 @@ class DownloadListOnlineController extends Controller
             $data->$key = (object)$value;
         }
         // dd($data);
-        return view('online_download_list', compact('data', 'result', 'keyword', 'amount', 'orderby', 'order', 'page', 'type_list', 'os_list'));
+        if (Auth::user()->permission > 9) {
+            $module_name = 'online_download_list_beta';
+            return view('online_download_list_beta', compact('data', 'result', 'keyword', 'amount', 'orderby', 'order', 'page', 'type_list', 'os_list', 'module_name'));
+        }
+        return view('online_download_list', compact('data', 'result', 'keyword', 'amount', 'orderby', 'order', 'page', 'type_list', 'os_list', 'module_name'));
     }
 
     public function export(Request $request, $keyword, $amount, $orderby, $order, $page)

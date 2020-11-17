@@ -79,6 +79,7 @@ Route::prefix('productList')->name('productList')->middleware(['auth', 'admin'])
 
 Route::prefix('api')->name('api')->middleware('auth')->group(function () {
     Route::get('/productList',[ApiController::class, 'productList'])->name('.productList');
+    Route::get('/downloadOnlineList',[ApiController::class, 'downloadOnlineList'])->name('.downloadOnlineList');
 });
 
 Route::middleware(['auth:sanctum', 'verified'])->get('/dashboard', function () {
