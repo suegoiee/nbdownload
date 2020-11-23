@@ -75,9 +75,9 @@
                                                 Title<input name="download_title" class="form-control" type="text">
                                                 Category
                                                 <select name="download_category" class="form-control" type="select">
-                                                    <option value="Driver">BIOS</option>
-                                                    <option value="Driver">EC</option>
-                                                    <option value="Driver">VBIOS</option>
+                                                    <option value="BIOS">BIOS</option>
+                                                    <option value="EC">EC</option>
+                                                    <option value="VBIOS">VBIOS</option>
                                                 </select>
                                                 File Path<input name="download_file" class="form-control" type="text">
                                                 Size<input name="download_size" class="form-control" type="text">
