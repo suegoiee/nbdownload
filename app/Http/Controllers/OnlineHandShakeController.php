@@ -40,7 +40,7 @@ class OnlineHandShakeController extends Controller
             $log= new \stdClass();
             $log->log_ip = $request->ip();
 
-            switch ( $request->tmp_category )
+            /*switch ( $request->tmp_category )
             {
                 case 'Driver':
                 case 'Driver and Application':
@@ -149,7 +149,7 @@ class OnlineHandShakeController extends Controller
             }
 
             $log->log_action = $action;
-            $this->dispatchNow(CreateLog::fromRequest($log));
+            $this->dispatchNow(CreateLog::fromRequest($log));*/
 
 
 
@@ -184,7 +184,7 @@ class OnlineHandShakeController extends Controller
                 'file_path' => $request->file_path.'/'.$request->tmp_title,
                 'download_size' => $file_size,
                 'action' => 'insert'
-            );
+            ); dd($list);
             $result = retrieve_by_curl($list, 'POST', 'https://internal-cms.msi.com.tw/api/v1/nb/add_download');
             
             $download = CmsDownloadTmp::where('tmp_no', $request->tmp_no)->first();

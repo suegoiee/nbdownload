@@ -46,10 +46,10 @@ class DownloadListOnlineController extends Controller
             $data->$key = (object)$value;
         }
         // dd($data);
-        if (Auth::user()->permission > 9) {
-            $module_name = 'online_download_list_beta';
-            return view('online_download_list_beta', compact('data', 'result', 'keyword', 'amount', 'orderby', 'order', 'page', 'type_list', 'os_list', 'module_name'));
-        }
+        //if (Auth::user()->permission > 9) {
+        //    $module_name = 'online_download_list_beta';
+        //    return view('online_download_list_beta', compact('data', 'result', 'keyword', 'amount', 'orderby', 'order', 'page', 'type_list', //'os_list', 'module_name'));
+        //}
         return view('online_download_list', compact('data', 'result', 'keyword', 'amount', 'orderby', 'order', 'page', 'type_list', 'os_list', 'module_name'));
     }
 

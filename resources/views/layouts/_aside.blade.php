@@ -28,7 +28,7 @@
               </a>
             </li>
           @endcan
-          @can('josh')
+          @can('super')
             <li class="nav-item @yield('log')">
               <a href="{{route('log.show', ['date'=>'202011', 'keyword'=>'all-data', 'amount' => '15', 'orderby' => 'log_create', 'order' => 'DESC', 'page' => 1])}}" class="nav-link @yield('log-href')">
                 <i class="nav-icon fas fa-calendar-alt"></i>

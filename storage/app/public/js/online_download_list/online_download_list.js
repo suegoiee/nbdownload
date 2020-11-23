@@ -109,3 +109,54 @@
             $('#seleted_relation-'+id).empty();
             $('#seleted_product-'+id).empty();
         });
+
+
+        $(".btn-search-model").on('click',function(e) {
+            event.preventDefault();
+            var id = $(this).closest(".input-group").find('.search-model').attr('model-id');
+            var selected_list = [];
+            $.ajax({
+                type: "GET",
+                url: $("#downloadOnlineList-api").val(),
+                data:{
+                    keyword : $(this).closest(".input-group").find('.search-model').val()
+                },
+                success:function(msg){
+                    search_model_result = msg;
+                    $("#model_pool-"+id).empty();
+                    msg.forEach(function(value) {
+                        $("#model_pool-"+id).append('<option value='+value['download_id']+'>'+value['download_title'] +'</option>');
+                    });
+                },
+                error:function(msg){
+                    console.log(msg);
+                }
+            });
+        });
+
+        $(".btn-search-product").on('click',function(e) {
+            event.preventDefault();
+            var id = $(this).closest(".input-group").find('.search-product').attr('model-id');
+            var selected_list = [];
+            $("#seleted_product-"+id+' option:selected').each(function(key, value){
+                selected_list.push($(value).val());
+            });
+            $.ajax({
+                type: "GET",
+                url: $("#productList-api").val(),
+                data:{
+                    keyword : $(this).closest(".input-group").find('.search-product').val()
+                },
+                success:function(msg){
+                    $("#product_pool-"+id).empty();
+                    msg.forEach(function(value) {
+                        if(jQuery.inArray(value['product_id'].toString(), selected_list) == -1){
+                            $("#product_pool-"+id).append('<option value='+value['product_id']+'>'+value['product_title'] +'( '+ value['product_model_name'] +' )' +'</option>');
+                        }
+                    });
+                },
+                error:function(msg){
+                    console.log(msg);
+                }
+            });
+        });
