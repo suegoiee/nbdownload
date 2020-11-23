@@ -127,24 +127,24 @@ class OnlineHandShakeController extends Controller
                     break;
                 case 'BIOS':
                     $file_path_name = 'nb/' . $file_rename;
-                    $file_size = ( file_exists( '/downloads/bos_exe/' . $file_path_name ) ) ? filesize( '/downloads/bos_exe/' . $file_path_name ) : 0;
+                    $file_size = ( file_exists( $bios_root . $file_path_name ) ) ? filesize( $bios_root . $file_path_name ) : 0;
                     if ( $file_size == 0 ) {
-                        $log->log_action = 'BIOS: '.$request->tmp_no.' File size is null in '.'/downloads/bos_exe/' . $file_path_name;
+                        $log->log_action = 'BIOS: '.$request->tmp_no.' File size is null in '.$bios_root . $file_path_name;
                         $this->dispatchNow(CreateLog::fromRequest($log));
                         return [ 'status' => 'error', 'message' => 'File size is null!' ];
                     }
-                    $action = 'BIOS: '.$request->tmp_no.' has found in '.'/downloads/bos_exe/' . $file_path_name;
+                    $action = 'BIOS: '.$request->tmp_no.' has found in '.$bios_root . $file_path_name;
                 break;
                 case 'EC':
                 case 'VBIOS':
                     $file_path_name = 'nb/' . $file_rename;
-                    $file_size = ( file_exists( '/downloads/archive/frm_exe/' . $file_path_name ) ) ? filesize( '/downloads/archive/frm_exe/' . $file_path_name ) : 0;
+                    $file_size = ( file_exists( $EC_VBIOS_root . $file_path_name ) ) ? filesize( $EC_VBIOS_root . $file_path_name ) : 0;
                     if ( $file_size == 0 ){ 
-                        $log->log_action = 'EC/VBIOS: '.$request->tmp_no.' File size is null in '.'/downloads/archive/frm_exe/' . $file_path_name;
+                        $log->log_action = 'EC/VBIOS: '.$request->tmp_no.' File size is null in '.$EC_VBIOS_root . $file_path_name;
                         $this->dispatchNow(CreateLog::fromRequest($log));
                         return [ 'status' => 'error', 'message' => 'File size is null!' ];
                     }
-                    $action = 'EC/VBIOS '.$request->tmp_no.' has found in '.'/downloads/archive/frm_exe/' . $file_path_name;
+                    $action = 'EC/VBIOS: '.$request->tmp_no.' has found in '.$EC_VBIOS_root . $file_path_name;
                     break;
             }
 
@@ -163,12 +163,17 @@ class OnlineHandShakeController extends Controller
                 $filter_cloumn = $category;
                 $type_id_list = config('global.others_type_id_list');
             }
-            foreach( $type_id_list as $row ) {
-                if ( $row['category_name'] == $filter_cloumn ){
-                    $type_id = $row['type_id']; 
-                    break;
-                }
-            }
+            $found_key = array_search($filter_cloumn, array_column($type_id_list, 'category_name'));
+            $type_id = $type_id_list[$found_key]['type_id']; 
+
+
+
+
+
+
+
+
+            
 
             isset($file_size) ? $file_size = $file_size : $file_size = 0;
             $list = array(
@@ -246,15 +251,39 @@ class OnlineHandShakeController extends Controller
     
     public function createOnlineData(Request $request)
     {
+        $log= new \stdClass();
+        $log->log_ip = $request->ip();
+        $file_path_name = 'nb/' . $request->download_file;
+        if($request->download_category == 'BIOS'){
+            $bios_root = '/downloads/bos_exe/';
+            $file_size = ( file_exists( $bios_root . $file_path_name ) ) ? filesize( $bios_root . $file_path_name ) : 0;
+            if ( $file_size == 0 ) {
+                $log->log_action = 'BIOS create manual: '.$request->tmp_no.' File size is null in '.$bios_root . $file_path_name;
+                $this->dispatchNow(CreateLog::fromRequest($log));
+                return [ 'status' => 'error', 'message' => 'File size is null!' ];
+            }
+            $action = 'BIOS create manual: '.$request->tmp_no.' has found in '.$bios_root . $file_path_name;
+        }
+        else{
+            $EC_VBIOS_root = '/downloads/archive/frm_exe/';
+            $file_size = ( file_exists( $EC_VBIOS_root . $file_path_name ) ) ? filesize( $EC_VBIOS_root . $file_path_name ) : 0;
+            if ( $file_size == 0 ){ 
+                $log->log_action = 'EC/VBIOS create manual: '.$request->tmp_no.' File size is null in '.$EC_VBIOS_root . $file_path_name;
+                $this->dispatchNow(CreateLog::fromRequest($log));
+                return [ 'status' => 'error', 'message' => 'File size is null!' ];
+            }
+            $action = 'EC/VBIOS create manual: '.$request->tmp_no.' has found in '.$EC_VBIOS_root . $file_path_name;
+        }
+        $log->log_action = $action;
+        $this->dispatchNow(CreateLog::fromRequest($log));
+
         $request['API_KEY'] = env('API_KEY');
         $type_array = explode(',', $request->type_id);
         $request['type_alias'] = CmsDownloadType::where('type_id', $type_array[1])->first()->type_title;
         $request['type_id'] = $type_array[0];
         unset($request['_token']);
         $list = $request->all();
-        dd(http_build_query($list));
         $result = retrieve_by_curl($list, 'POST', 'https://internal-cms.msi.com.tw/api/v1/nb/add_relationships');
-        dd($result);
         $log= new \stdClass();
         $log->log_action = 'update '.$request['download_id'].' online data and relation';
         $log->log_ip = $request->ip();

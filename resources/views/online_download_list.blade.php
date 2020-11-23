@@ -73,6 +73,12 @@
                                             <div class="col-sm-12">
                                                 <input name="action" type="hidden" value="insert">
                                                 Title<input name="download_title" class="form-control" type="text">
+                                                Category
+                                                <select name="download_category" class="form-control" type="select">
+                                                    <option value="Driver">BIOS</option>
+                                                    <option value="Driver">EC</option>
+                                                    <option value="Driver">VBIOS</option>
+                                                </select>
                                                 File Path<input name="download_file" class="form-control" type="text">
                                                 Size<input name="download_size" class="form-control" type="text">
                                                 OS
