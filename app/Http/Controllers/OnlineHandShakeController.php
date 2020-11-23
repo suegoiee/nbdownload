@@ -152,6 +152,23 @@ class OnlineHandShakeController extends Controller
             $this->dispatchNow(CreateLog::fromRequest($log));*/
 
 
+            $category = $request->tmp_category;
+            $filter_cloumn = $request->tmp_type;
+            $type_id_list = array();
+            $type_id = 0 ;
+            if ( $category == 'Driver' || $category == 'Driver and Application' ) {
+                $type_id = 90 ;
+                $type_id_list = config('global.drivers_type_id_list');
+            } else {
+                $filter_cloumn = $category;
+                $type_id_list = config('global.others_type_id_list');
+            }
+            foreach( $type_id_list as $row ) {
+                if ( $row['category_name'] == $filter_cloumn ){
+                    $type_id = $row['type_id']; 
+                    break;
+                }
+            }
 
             isset($file_size) ? $file_size = $file_size : $file_size = 0;
             $list = array(
@@ -183,6 +200,7 @@ class OnlineHandShakeController extends Controller
                 'tmp_description' => $request->tmp_description,
                 'file_path' => $request->file_path.'/'.$request->tmp_title,
                 'download_size' => $file_size,
+                'type_id' => $type_id,
                 'action' => 'insert'
             ); dd($list);
             $result = retrieve_by_curl($list, 'POST', 'https://internal-cms.msi.com.tw/api/v1/nb/add_download');
