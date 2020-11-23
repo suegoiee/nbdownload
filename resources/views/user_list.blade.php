@@ -129,7 +129,6 @@
                                                     <option value="0" {{$user_data->permission == 0 ? 'selected' : ''}}>User</option>
                                                     <option value="1" {{$user_data->permission == 1 ? 'selected' : ''}}>Admin</option>
                                                     <option value="2" {{$user_data->permission == 2 ? 'selected' : ''}}>Super</option>
-                                                    <option value="2" {{$user_data->permission == 10 ? 'selected' : ''}}>Super</option>
                                                 </select>
                                               </div>
                                               <input type="hidden" name="id" value="{{$user_data->id}}">

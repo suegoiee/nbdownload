@@ -49,7 +49,8 @@ return [
     'permission_list' => [
         0 => 'user',
         1 => 'admin',
-        2 => 'super'
+        2 => 'super',
+        10 => 'super'
     ],
 
     'drivers_type_id_list'  => [
