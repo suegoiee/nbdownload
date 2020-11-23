@@ -202,7 +202,7 @@ class OnlineHandShakeController extends Controller
                 'download_size' => $file_size,
                 'type_id' => $type_id,
                 'action' => 'insert'
-            ); dd($list);
+            );
             $result = retrieve_by_curl($list, 'POST', 'https://internal-cms.msi.com.tw/api/v1/nb/add_download');
             
             $download = CmsDownloadTmp::where('tmp_no', $request->tmp_no)->first();
