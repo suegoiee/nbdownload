@@ -260,7 +260,7 @@ class OnlineHandShakeController extends Controller
             if ( $file_size == 0 ) {
                 $log->log_action = 'BIOS create manual: '.$request->tmp_no.' File size is null in '.$bios_root . $file_path_name;
                 $this->dispatchNow(CreateLog::fromRequest($log));
-                return [ 'status' => 'error', 'message' => 'File size is null!' ];
+                return [ 'status' => 'error', 'message' => ' File size is null in '.$bios_root . $file_path_name ];
             }
             $action = 'BIOS create manual: '.$request->tmp_no.' has found in '.$bios_root . $file_path_name;
         }
@@ -270,7 +270,7 @@ class OnlineHandShakeController extends Controller
             if ( $file_size == 0 ){ 
                 $log->log_action = 'EC/VBIOS create manual: '.$request->tmp_no.' File size is null in '.$EC_VBIOS_root . $file_path_name;
                 $this->dispatchNow(CreateLog::fromRequest($log));
-                return [ 'status' => 'error', 'message' => 'File size is null!' ];
+                return [ 'status' => 'error', 'message' => 'File size is null in '.$EC_VBIOS_root . $file_path_name ];
             }
             $action = 'EC/VBIOS create manual: '.$request->tmp_no.' has found in '.$EC_VBIOS_root . $file_path_name;
         }
