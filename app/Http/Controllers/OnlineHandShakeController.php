@@ -281,6 +281,7 @@ class OnlineHandShakeController extends Controller
         $type_array = explode(',', $request->type_id);
         $request['type_alias'] = CmsDownloadType::where('type_id', $type_array[1])->first()->type_title;
         $request['type_id'] = $type_array[0];
+        $request['download_size'] = $file_size;
         unset($request['_token']);
         $list = $request->all();
         $result = retrieve_by_curl($list, 'POST', 'https://internal-cms.msi.com.tw/api/v1/nb/add_relationships');
