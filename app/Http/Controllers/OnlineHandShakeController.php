@@ -40,7 +40,7 @@ class OnlineHandShakeController extends Controller
             $log= new \stdClass();
             $log->log_ip = $request->ip();
 
-            /*switch ( $request->tmp_category )
+            switch ( $request->tmp_category )
             {
                 case 'Driver':
                 case 'Driver and Application':
@@ -149,7 +149,7 @@ class OnlineHandShakeController extends Controller
             }
 
             $log->log_action = $action;
-            $this->dispatchNow(CreateLog::fromRequest($log));*/
+            $this->dispatchNow(CreateLog::fromRequest($log));
 
 
             $category = $request->tmp_category;
