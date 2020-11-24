@@ -127,6 +127,7 @@ class OnlineHandShakeController extends Controller
                     break;
                 case 'BIOS':
                     $file_path_name = 'nb/' . $file_rename;
+                    $bios_root = '/downloads/bos_exe/';
                     $file_size = ( file_exists( $bios_root . $file_path_name ) ) ? filesize( $bios_root . $file_path_name ) : 0;
                     if ( $file_size == 0 ) {
                         $log->log_action = 'BIOS: '.$request->tmp_no.' File size is null in '.$bios_root . $file_path_name;
@@ -138,6 +139,7 @@ class OnlineHandShakeController extends Controller
                 case 'EC':
                 case 'VBIOS':
                     $file_path_name = 'nb/' . $file_rename;
+                    $EC_VBIOS_root = '/downloads/archive/frm_exe/';
                     $file_size = ( file_exists( $EC_VBIOS_root . $file_path_name ) ) ? filesize( $EC_VBIOS_root . $file_path_name ) : 0;
                     if ( $file_size == 0 ){ 
                         $log->log_action = 'EC/VBIOS: '.$request->tmp_no.' File size is null in '.$EC_VBIOS_root . $file_path_name;
