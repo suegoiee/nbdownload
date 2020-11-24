@@ -284,9 +284,10 @@ class OnlineHandShakeController extends Controller
         $request['download_size'] = $file_size;
         unset($request['_token']);
         $list = $request->all();
+        dd(http_build_query($list));
         $result = retrieve_by_curl($list, 'POST', 'https://internal-cms.msi.com.tw/api/v1/nb/add_relationships');
         $log= new \stdClass();
-        $log->log_action = 'update '.$request['download_id'].' online data and relation';
+        $log->log_action = 'create '.$request['download_title'].' online data and relation. Result: '.$result['message'] ? 'done' : 'failed';
         $log->log_ip = $request->ip();
         $this->dispatchNow(CreateLog::fromRequest($log));
         return redirect()->back();
