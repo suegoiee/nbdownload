@@ -80,7 +80,6 @@
                                                     <option value="VBIOS">VBIOS</option>
                                                 </select>
                                                 File Path<input name="download_file" class="form-control" type="text">
-                                                Size<input name="download_size" class="form-control" type="text">
                                                 OS
                                                 <select name="os_id" class="form-control" type="text">
                                                     @foreach($os_list as $os)
@@ -295,8 +294,8 @@
                                                             Release<input name="download_release" class="form-control" type="datetime-local" value="{{date('Y-m-d\TH:i', strtotime($list->download_release))}}">
                                                             Show
                                                             <select name="download_showed" class="form-control" type="select">
-                                                                <option value="{{$list->download_showed}}" {{$list->download_showed == 0 ? 'selected' : ''}}>No show</option>
-                                                                <option value="{{$list->download_showed}}" {{$list->download_showed == 1 ? 'selected' : ''}}>Show</option>
+                                                                <option value="0" {{$list->download_showed == 0 ? 'selected' : ''}}>No show</option>
+                                                                <option value="1" {{$list->download_showed == 1 ? 'selected' : ''}}>Show</option>
                                                             </select>
                                                         </div>
                                                     </div>
